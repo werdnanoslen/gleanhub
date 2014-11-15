@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 <body>
 <fieldset>
-<legend>Debug functions! Test output!</legend>
+<legend>Local PHP Tester</legend>
 <form action="index.php" method="post">
     <input name="time" type="hidden" value="<script>document.write(new Date());</script>" />
     <input name="input" type="text" />
     <select name="function">
-        <option value="newOrder-i">newOrder (inject)</option>
+        <option value="test">test</option>
     </select>
     errors: <input name="displayErrors" type="checkbox" value="1" checked/>
     notices: <input name="displayNotices" type="checkbox" value="1" checked/>
@@ -29,7 +29,7 @@ $input = $_POST['input'];
 switch ($_POST['function'])
 {
     case 'test':
-        better_print_r(test($batchSize, $filter));
+        better_print_r(test());
         break;
 }
 ?>
