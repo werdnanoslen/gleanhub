@@ -2,11 +2,19 @@
 <api>
     <description><![CDATA[Gleanhub API]]></description>
 
-    <command id='test' security='public'>
+    <command id='user' security='public'>
 		<description><![CDATA[Tests things]]></description>
-		<index>
-			<description><![CDATA[Do it]]></description>
-			<action file='api.php'><![CDATA[test();]]></action>
-		</index>
+		<get>
+			<description><![CDATA[Get user profile information]]></description>
+			<action file='api.php'><![CDATA[getUser();]]></action>
+		</get>
+        <put>
+            <description><![CDATA[Create new user profile]]></description>
+            <action file='api.php'><![CDATA[createUser();]]></action>
+        </put>
+        <delete>
+            <description><![CDATA[Delete a user profile]]></description>
+            <action file='api.php'><![CDATA[deleteUser();]]></action>
+        </delete>
 	</command>
 </api>
