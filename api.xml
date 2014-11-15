@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<api>
+    <description><![CDATA[Gleanhub API]]></description>
+
+    <command id='test' security='public'>
+		<description><![CDATA[Tests things]]></description>
+		<index>
+			<description><![CDATA[Do it]]></description>
+			<action file='api.php'><![CDATA[test();]]></action>
+		</index>
+	</command>
+</api>
