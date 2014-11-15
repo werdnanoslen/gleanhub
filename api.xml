@@ -3,18 +3,46 @@
     <description><![CDATA[Gleanhub API]]></description>
 
     <command id='user' security='public'>
-		<description><![CDATA[Tests things]]></description>
-		<get>
-			<description><![CDATA[Get user profile information]]></description>
-			<action file='api.php'><![CDATA[getUser();]]></action>
-		</get>
+        <description><![CDATA[Actions for users]]></description>
+        <get>
+            <description><![CDATA[Get user profile information]]></description>
+            <action file='api.php'><![CDATA[getUser($_REST['user']);]]></action>
+        </get>
+        <post>
+            <description><![CDATA[Edit user profile (auth)]]></description>
+            <action file='api.php'><![CDATA[editUser($_REST['user'], $_POST);]]></action>
+        </post>
         <put>
-            <description><![CDATA[Create new user profile]]></description>
-            <action file='api.php'><![CDATA[createUser();]]></action>
+            <description><![CDATA[Create new user profile (auth)]]></description>
+            <action file='api.php'><![CDATA[createUser($_POST);]]></action>
         </put>
         <delete>
-            <description><![CDATA[Delete a user profile]]></description>
-            <action file='api.php'><![CDATA[deleteUser();]]></action>
+            <description><![CDATA[Delete a user profile (auth)]]></description>
+            <action file='api.php'><![CDATA[deleteUser($_REST['user']);]]></action>
         </delete>
-	</command>
+    </command>
+
+    <command id='foodop' security='public'>
+        <description><![CDATA[Actions for food opportunities]]></description>
+        <index>
+            <description><![CDATA[List all food ops]]></description>
+            <action file='api.php'><![CDATA[listFoodops();]]></action>
+        </index>
+        <get>
+            <description><![CDATA[Get information about a food op]]></description>
+            <action file='api.php'><![CDATA[getFoodop($_REST['foodop']);]]></action>
+        </get>
+        <post>
+            <description><![CDATA[Edit food op (auth)]]></description>
+            <action file='api.php'><![CDATA[editFoodop($_REST['foodop'], $_POST);]]></action>
+        </post>
+        <put>
+            <description><![CDATA[Create new food op (auth)]]></description>
+            <action file='api.php'><![CDATA[createFoodop($_POST);]]></action>
+        </put>
+        <delete>
+            <description><![CDATA[Delete a food op (auth)]]></description>
+            <action file='api.php'><![CDATA[deleteFoodop($_REST['foodop']);]]></action>
+        </delete>
+    </command>
 </api>
