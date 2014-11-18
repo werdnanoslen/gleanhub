@@ -1,0 +1,56 @@
+//out: style.css
+@orange: #f27936;
+@grey: #f5f5f3;
+@black: #222;
+@golden: 1.618;
+
+html {
+    font-size: 16px;
+}
+body {
+    margin: 0 auto;
+    font-size: 1rem;
+    color: @black;
+    background-color: @grey;
+}
+
+h1, h2, h3, .h1, .h2, .h3 {
+    font-family: 'Helvetica Neue', Helvetica, sans-serif;
+    margin: 0;
+}
+h1, h2, .h1, .h2 {
+    color: @orange;
+}
+h1, .h1 {
+    font-size: 3.375rem;
+}
+h2, .h2, h3, .h3 {
+    font-size: 1.5rem;
+    font-weight: normal;
+}
+header, footer {
+    padding: 4rem 0;
+    background-color: @grey;
+    width: 960px;
+    margin: 0 auto;
+}
+header img {
+    max-height: 90px;
+    float: left;
+    margin-right: 20px;
+}
+main {
+    width: 100%;
+    background-color: #fff;
+    margin: 0 auto;
+}
+main a {
+    width: 960px;
+    margin: 0 auto;
+    display: block;
+    overflow-x: auto;
+}
+footer p {
+    color: @orange;
+    text-align: center;
+}
