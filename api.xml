@@ -3,18 +3,86 @@
     <description><![CDATA[Gleanhub API]]></description>
 
     <command id='user' security='public'>
-		<description><![CDATA[Tests things]]></description>
-		<get>
-			<description><![CDATA[Get user profile information]]></description>
-			<action file='api.php'><![CDATA[getUser();]]></action>
-		</get>
+        <description><![CDATA[Actions for users]]></description>
+        <get>
+            <description><![CDATA[Get user profile information]]></description>
+            <action file='api.php'><![CDATA[getUser($_REST['user']);]]></action>
+            <param id="$_REST['user']">
+                <description>User ID</description>
+                <exampleValue>1234</exampleValue>
+            </param>
+        </get>
+        <post>
+            <description><![CDATA[Edit user profile (auth)]]></description>
+            <action file='api.php'><![CDATA[editUser($_REST['user'], $_POST);]]></action>
+            <param id="$_REST['user']">
+                <description>User ID</description>
+                <exampleValue>1234</exampleValue>
+            </param>
+            <param id="$_POST">
+                <description>Associative array of keys and values to be updated</description>
+                <exampleValue>{'isVerified': 'TRUE'}</exampleValue>
+            </param>
+        </post>
         <put>
-            <description><![CDATA[Create new user profile]]></description>
-            <action file='api.php'><![CDATA[createUser();]]></action>
+            <description><![CDATA[Create new user profile (auth)]]></description>
+            <action file='api.php'><![CDATA[createUser($_POST);]]></action>
+            <param id="$_POST">
+                <description>Associative array of keys and values to initialize user</description>
+                <exampleValue>{'name': 'andy', 'email': 'andy@andyhub.com'}</exampleValue>
+            </param>
         </put>
         <delete>
-            <description><![CDATA[Delete a user profile]]></description>
-            <action file='api.php'><![CDATA[deleteUser();]]></action>
+            <description><![CDATA[Delete a user profile (auth)]]></description>
+            <action file='api.php'><![CDATA[deleteUser($_REST['user']);]]></action>
+            <param id="$_REST['user']">
+                <description>User ID</description>
+                <exampleValue>1234</exampleValue>
+            </param>
         </delete>
-	</command>
+    </command>
+
+    <command id='foodop' security='public'>
+        <description><![CDATA[Actions for food opportunities]]></description>
+        <index>
+            <description><![CDATA[List all food ops]]></description>
+            <action file='api.php'><![CDATA[listFoodops();]]></action>
+        </index>
+        <get>
+            <description><![CDATA[Get information about a food op]]></description>
+            <action file='api.php'><![CDATA[getFoodop($_REST['foodop']);]]></action>
+            <param id="$_REST['foodop']">
+                <description>Foodop ID</description>
+                <exampleValue>1234</exampleValue>
+            </param>
+        </get>
+        <post>
+            <description><![CDATA[Edit food op (auth)]]></description>
+            <action file='api.php'><![CDATA[editFoodop($_REST['foodop'], $_POST);]]></action>
+            <param id="$_REST['foodop']">
+                <description>Foodop ID</description>
+                <exampleValue>1234</exampleValue>
+            </param>
+            <param id="$_POST">
+                <description>Associative array of keys and values to be updated</description>
+                <exampleValue>{'visibility': 'closed'}</exampleValue>
+            </param>
+        </post>
+        <put>
+            <description><![CDATA[Create new food op (auth)]]></description>
+            <action file='api.php'><![CDATA[createFoodop($_POST);]]></action>
+            <param id="$_POST">
+                <description>Associative array of keys and values to be updated</description>
+                <exampleValue>{'visibility': 'public', 'location': '60.1142,81.5558'}</exampleValue>
+            </param>
+        </put>
+        <delete>
+            <description><![CDATA[Delete a food op (auth)]]></description>
+            <action file='api.php'><![CDATA[deleteFoodop($_REST['foodop']);]]></action>
+            <param id="$_REST['foodop']">
+                <description>Foodop ID</description>
+                <exampleValue>1234</exampleValue>
+            </param>
+        </delete>
+    </command>
 </api>
