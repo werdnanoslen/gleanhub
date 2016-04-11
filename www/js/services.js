@@ -2,7 +2,7 @@ angular.module('services', [])
 
 .factory('API', function ($q, $http) {
     var deferred = $q.defer();
-    var api = '//45.55.80.26:8080/demos/gleanhub/api/';
+    var api = '//45.55.80.26:8001/demos/gleanhub/api/';
 
     return {
         getReports: function () {
