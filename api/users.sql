@@ -2,7 +2,7 @@
 -- version 3.5.1
 -- http://www.phpmyadmin.net
 --
--- Host: db.cip.gatech.edu
+-- Host: andyhub.com
 -- Generation Time: Nov 15, 2014 at 03:22 AM
 -- Server version: 5.5.15-log
 -- PHP Version: 5.3.13
