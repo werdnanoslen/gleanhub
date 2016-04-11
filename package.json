@@ -1,7 +1,7 @@
 {
-  "name": "mobile-map-io",
+  "name": "gleanhub",
   "version": "1.0.0",
-  "description": "mobile-map-io: An Ionic project",
+  "description": "connects businesses and people to provide food and prevent waste.",
   "dependencies": {
     "body-parser": "^1.14.1",
     "express": "^4.13.3",

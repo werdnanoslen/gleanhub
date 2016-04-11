@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Feb 07, 2016 at 12:02 PM
+-- Generation Time: Apr 11, 2016 at 02:09 AM
 -- Server version: 5.5.47-0ubuntu0.14.04.1
 -- PHP Version: 5.5.9-1ubuntu4.14
 
@@ -17,24 +17,25 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8 */;
 
 --
--- Database: `mobile-map-io`
+-- Database: `gleanhub`
 --
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `reports`
+-- Table structure for table `foodops`
 --
 
-CREATE TABLE IF NOT EXISTS `reports` (
+CREATE TABLE IF NOT EXISTS `foodops` (
   `id` mediumint(9) NOT NULL AUTO_INCREMENT,
   `datetime_reported` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `datetime_occurred` datetime DEFAULT NULL,
-  `number` int(11) DEFAULT NULL,
-  `text` varchar(255) DEFAULT NULL,
-  `place` varchar(255) DEFAULT NULL,
-  `lat` decimal(10,8) DEFAULT NULL,
-  `lng` decimal(11,8) DEFAULT NULL,
+  `availability` text COMMENT 'Time range of the pickup area',
+  `notes` varchar(255) DEFAULT NULL COMMENT 'Notes or instructions the owner may leave to the gleaner',
+  `place` varchar(255) DEFAULT NULL COMMENT 'Friendly name of food pickup area',
+  `lat` decimal(10,8) DEFAULT NULL COMMENT 'Latitude of food pickup area',
+  `lng` decimal(11,8) DEFAULT NULL COMMENT 'Longitude of food pickup area',
+  `owner` int(11) NOT NULL COMMENT 'UID of user who owns this foodop',
+  `visibility` enum('public','limited','closed') NOT NULL DEFAULT 'public' COMMENT 'Public ops are visible to all, limited ops are visible to owner and advisors, closed events are visible only to owner',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=38 ;
 

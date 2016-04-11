@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('mobile-map-io', [
+angular.module('gleanhub', [
     'ionic',
     'uiGmapgoogle-maps',
     'google.places',

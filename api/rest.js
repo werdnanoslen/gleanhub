@@ -12,7 +12,7 @@ REST_ROUTER.prototype.handleRoutes = function(router, connection) {
     // Get API info
     router.get("/", function(req, res) {
         res.json({
-            "Message": "This is the mobile-map-io API"
+            "Message": "This is the Gleanhub API"
         });
     });
 

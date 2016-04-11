@@ -57,7 +57,7 @@ REST.prototype.configureExpress = function(connection) {
 
 REST.prototype.startServer = function() {
     app.listen(secrets.PORT, function(){
-      console.log("mobile-map-io API running at port " + secrets.PORT);
+      console.log("Gleanhub API running at port " + secrets.PORT);
     });
 }
 

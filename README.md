@@ -9,4 +9,5 @@ Based on [mobile-map-io](https://github.com/werdnanoslen/mobile-map-io): a boile
 1. Run ```npm install```
 1. Run ```bower install```
 1. Rename secrets.js.example to just secrets.js and add your server config
-1. Import api/reports.sql, and then run ```node api/server.js```
+1. Import api/foodops.sql and api/users.sql
+1. Run ```node api/server.js```
