@@ -27,5 +27,9 @@ node_modules
 # Users Environment Variables
 .lock-wscript
 
-# gtjourney
-db_credentials.php
+# For this project
+platforms/
+plugins/
+www/lib/
+api/secrets.js
+deployment-config.json

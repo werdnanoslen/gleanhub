@@ -1,0 +1,39 @@
+<ion-view view-title="List">
+    <ion-nav-bar align-title="center" class="bar-positive">
+        <ion-nav-buttons side="left">
+            <button class="button button-icon icon ion-map"
+                    ui-sref="map"
+                    nav-direction="swap">
+            </button>
+        </ion-nav-buttons>
+        <ion-nav-buttons side="right">
+            <button class="button button-icon button-clear icon ion-plus"
+                    ui-sref="add">
+            </button>
+        </ion-nav-buttons>
+    </ion-nav-bar>
+    <ion-content>
+        <div class="list">
+            <div class="item item-divider flex" id="searchBar">
+                <!-- <search-field class="flex-item"></search-field> -->
+                <input
+                    class="flex-item"
+                    type="search"
+                    g-places-autocomplete
+                    ng-model="search.place"
+                />
+                <button class="button button-small button-icon icon ion-pinpoint"
+                        ng-click="centerOnMe()">
+                </button>
+            </div>
+            <a  class="item"
+                ng-repeat="marker in reports.markers"
+                ui-sref="report({reportId: marker.id})">
+                {{marker.title}}
+                <span class="item-note">
+                    {{marker.distance}} km
+                </span>
+            </a>
+        </div>
+    </ion-content>
+</ion-view>

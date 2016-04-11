@@ -1,0 +1,52 @@
+<ion-view view-title="Report">
+    <ion-nav-bar align-title="center" class="bar-positive">
+        <ion-nav-back-button></ion-nav-back-button>
+        <ion-nav-buttons side="right">
+            <button class="button button-icon icon ion-map"
+                    ui-sref="map">
+            </button>
+        </ion-nav-buttons>
+    </ion-nav-bar>
+    <ion-content scroll="false" id="mainContainer">
+        <div id="formContainer">
+            <form class="list" id="reportDetails">
+                <label class="item item-input">
+                    <i class="icon ion-android-time"></i>
+                    <input type="date" name="date" ng-model="form.date" disabled />
+                    <input type="time" step="60" name="time" ng-model="form.time" disabled />
+                </label>
+                <label class="item item-input">
+                    <i class="icon ion-social-bitcoin"></i>
+                    <input type="number" name="number" ng-model="form.number" disabled />
+                </label>
+                <label class="item item-input">
+                    <i class="icon ion-android-textsms"></i>
+                    <input type="text" name="text" ng-model="form.text" disabled />
+                </label>
+                <label class="item item-input">
+                    <i class="icon ion-location"></i>
+                    <input  type="search"
+                            ng-model="form.place"
+                            name="place"
+                            disabled
+                    />
+                </label>
+            </form>
+        </div>
+
+        <div id="mapContainer">
+            <div id="centerMarker"></div>
+            <ui-gmap-google-map
+                 center="map.center"
+                 options="map.options"
+                 zoom="map.zoom">
+                <ui-gmap-marker
+                    coords="map.position.coords"
+                    idkey="'map.position.id'"
+                    icon="map.position.icon"
+                    options="map.position.options">
+                </ui-gmap-marker>
+            </ui-gmap-google-map>
+        </div>
+    </ion-content>
+</ion-view>

@@ -1,0 +1,61 @@
+<ion-view view-title="Map">
+    <ion-nav-bar align-title="center" class="bar-positive">
+        <ion-nav-buttons side="left">
+            <button class="button button-icon icon ion-ios-list-outline"
+                    ui-sref="list"
+                    nav-direction="swap">
+            </button>
+        </ion-nav-buttons>
+        <ion-nav-buttons side="right">
+            <button class="button button-icon button-clear icon ion-plus"
+                    ui-sref="add">
+            </button>
+        </ion-nav-buttons>
+    </ion-nav-bar>
+    <ion-content scroll="false">
+        <div class="item item-divider flex" id="searchBar">
+            <!-- <search-field
+                class="flex-item"
+                ng-show="mapReady">
+            </search-field> -->
+            <input  class="flex-item"
+                    type="search"
+                    g-places-autocomplete
+                    ng-blur="submitSearch()"
+                    ng-keypress="submitSearch($event)"
+                    ng-model="search.place"
+                    ng-show="mapReady"
+            />
+            <button class="button button-small button-icon icon ion-pinpoint"
+                    ng-click="centerOnMe()"
+                    ng-show="mapReady">
+            </button>
+        </div>
+
+        <ui-gmap-google-map
+            center="map.center"
+            bounds="map.bounds"
+            control="map.control"
+            events="map.events"
+            options="map.options"
+            pan="true"
+            zoom="map.zoom">
+            <ui-gmap-marker
+                coords="map.position.coords"
+                idKey="'map.position.id'"
+                icon="map.position.icon"
+                options="map.position.options">
+            </ui-gmap-marker>
+            <ui-gmap-marker
+                coords="map.search.coords"
+                idkey="'map.search.id'"
+                options="map.search.options">
+            </ui-gmap-marker>
+            <ui-gmap-markers
+                events="map.markersEvents"
+                models="reports.markers"
+                coords="'self'">
+            </ui-gmap-markers>
+        </ui-gmap-google-map>
+    </ion-content>
+</ion-view>
