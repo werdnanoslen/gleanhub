@@ -23,10 +23,10 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
--- Table structure for table `foodops`
+-- Table structure for table `reports`
 --
 
-CREATE TABLE IF NOT EXISTS `foodops` (
+CREATE TABLE IF NOT EXISTS `reports` (
   `id` mediumint(9) NOT NULL AUTO_INCREMENT,
   `datetime_reported` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `availability` text COMMENT 'Time range of the pickup area',

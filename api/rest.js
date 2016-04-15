@@ -132,10 +132,11 @@ REST_ROUTER.prototype.handleRoutes = function(router, connection) {
 
     // Add report
     router.post("/reports", function(req, res) {
-        var query = "INSERT INTO ??(??,??,??,??,??,??) VALUES (?,?,?,?,?,?)";
+        var query = "INSERT INTO ??(??,??,??,??,??) VALUES (?,?,?,?,?)";
         var report = req.body.reportJson;
-        var table = ["reports", "datetime_occurred", "number", "text", "place", "lat", "lng",
-            report.datetime, report.number, report.text, report.place, report.lat, report.lng
+        console.log(report);
+        var table = ["reports", "availability", "notes", "place", "lat", "lng",
+            report.availability, report.notes, report.place, report.lat, report.lng
         ];
         query = mysql.format(query, table);
         connection.query(query, function(err, rows) {
@@ -153,12 +154,11 @@ REST_ROUTER.prototype.handleRoutes = function(router, connection) {
 
     // Update report
     router.put("/reports", function(req, res) {
-        var query = "UPDATE ?? SET ?? = ?, ?? = ?, ?? = ?, ?? = ? WHERE ?? = ?";
+        var query = "UPDATE ?? SET ?? = ?, ?? = ?, ?? = ? WHERE ?? = ?";
         var report = req.body.reportJson;
         var table = ["reports",
-            "datetime_occurred", report.datetime,
-            "number", report.number,
-            "text", report.text,
+            "availability", report.availability,
+            "notes", report.notes,
             "place", report.place,
             "id", report.id
         ];

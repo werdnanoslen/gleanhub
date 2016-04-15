@@ -338,6 +338,9 @@ angular.module('controllers', [])
     $scope.centerSetByPlaceClick = false;
     $scope.form = {};
     $scope.mapReady = false;
+    if (undefined !== $scope.search) {
+        $scope.form.place = $scope.search.place;
+    }
     $scope.map = {
         center: {
             latitude: 0,
@@ -363,11 +366,6 @@ angular.module('controllers', [])
         $scope.overrideInfoWindowClick();
     });
 
-    var now = new Date();
-    now.setSeconds(0);
-    now.setMilliseconds(0);
-    $scope.form.date = $scope.form.time = now;
-
     $scope.centerMap = function() {
         console.log('Centering');
         if (undefined === $scope.search || Object.keys($scope.search).length === 0) {
@@ -386,7 +384,7 @@ angular.module('controllers', [])
         });
         navigator.geolocation.getCurrentPosition(function(pos) {
             console.log('Got pos', pos);
-            $scope.search.place = 'My location';
+            $scope.form.place = 'My location';
             $scope.search.lat = pos.coords.latitude;
             $scope.search.lng = pos.coords.longitude;
             $scope.map.position = {
@@ -414,17 +412,8 @@ angular.module('controllers', [])
     $scope.submitForm = function() {
         //TODO validation
         var reportJson = $scope.form;
-
-        /*
-         HTML doesn't provide a nice combined datetime picker, so this
-         combines the two fields into one MySQL-ready timestamp object
-        */
-        $scope.form.date.setHours($scope.form.time.getHours());
-        $scope.form.date.setMinutes($scope.form.time.getMinutes());
-        reportJson.datetime = $scope.form.date.toISOString().slice(0, 19).replace('T', ' ');
-
-        reportJson.lat = $scope.map.center.latitude;
-        reportJson.lng = $scope.map.center.longitude;
+        reportJson.lat = $scope.search.lat;
+        reportJson.lng = $scope.search.lng;
 
         var promise = API.addReport(reportJson);
         promise.then(
@@ -442,7 +431,7 @@ angular.module('controllers', [])
             content: 'Getting location...',
             showBackdrop: false
         });
-        $scope.search.place = place;
+        $scope.form.place = place.formatted_address;
         $scope.search.lat = place.geometry.location.lat();
         $scope.search.lng = place.geometry.location.lng();
         $scope.centerMap();
@@ -459,7 +448,6 @@ angular.module('controllers', [])
                     var place = this.content.childNodes[0].childNodes[1].innerText.trim();
                     $scope.centerSetByPlaceClick = true;
                     $scope.centerMap();
-                    $scope.search.place = place;
                     $scope.form.place = place;
                     $scope.$apply();
                     return;
@@ -487,8 +475,8 @@ angular.module('controllers', [])
                     console.error('geocode error: ', status);
                     $scope.form.place = latlng.toUrlValue();
                 }
-                $scope.form.lat = latlng.lat;
-                $scope.form.lng = latlng.lng;
+                $scope.search.lat = latlng.lat;
+                $scope.search.lng = latlng.lng;
                 //TODO: handle scope updates to async model better than this
                 $scope.$apply();
             });
@@ -496,7 +484,7 @@ angular.module('controllers', [])
     }
 })
 
-.controller('ReportCtrl', function($rootScope, $scope, uiGmapGoogleMapApi, $state, API) {
+.controller('ReportCtrl', function($rootScope, $scope, $log, uiGmapGoogleMapApi, $state, API) {
     $scope.map = {
         center: {
             latitude: 0,
@@ -514,8 +502,6 @@ angular.module('controllers', [])
         function (payload) {
             var report = payload.data.report[0];
             $scope.form = report;
-            var datetime = new Date(report.datetime_occurred);
-            $scope.form.date = $scope.form.time = datetime;
             $scope.map.center.latitude = report.lat;
             $scope.map.center.longitude = report.lng;
         },

@@ -10,26 +10,40 @@
     <ion-content scroll="false" id="mainContainer">
         <div id="formContainer">
             <form class="list" id="reportDetails">
-                <label class="item item-input">
-                    <i class="icon ion-android-time"></i>
-                    <input type="date" name="date" ng-model="form.date" disabled />
-                    <input type="time" step="60" name="time" ng-model="form.time" disabled />
+                <label class="item item-input item-floating-label">
+                    <span class="input-label">Describe your food op</span>
+                    <textarea   name="notes"
+                                ng-model="form.notes"
+                                placeholder="Describe your food op"
+                                rows="1"
+                                disabled>
+                    </textarea>
                 </label>
-                <label class="item item-input">
-                    <i class="icon ion-social-bitcoin"></i>
-                    <input type="number" name="number" ng-model="form.number" disabled />
-                </label>
-                <label class="item item-input">
-                    <i class="icon ion-android-textsms"></i>
-                    <input type="text" name="text" ng-model="form.text" disabled />
-                </label>
-                <label class="item item-input">
-                    <i class="icon ion-location"></i>
-                    <input  type="search"
-                            ng-model="form.place"
-                            name="place"
+                <label class="item item-input item-floating-label">
+                    <span class="input-label">When is it available?</span>
+                    <input  type="text"
+                            name="availability"
+                            ng-model="form.availability"
+                            placeholder="When is it available?"
                             disabled
-                    />
+                    >
+                </label>
+                <label class="item item-input item-floating-label">
+                    <span class="input-label">Where is it?</span>
+                    <div class="flex">
+                        <input  type="search"
+                                g-places-autocomplete
+                                ng-model="form.place"
+                                name="place"
+                                placeholder="Where is it?"
+                                class="flex-item"
+                                disabled
+                        >
+                        <button class="flex-item button button-small button-icon icon ion-pinpoint"
+                                ng-click="centerOnMe()"
+                                ng-show="mapReady">
+                        </button>
+                    </div>
                 </label>
             </form>
         </div>

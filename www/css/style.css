@@ -31,15 +31,6 @@ map {
 #searchBar button {
     padding-right: 0;
 }
-#addForm input,
-#reportDetails input,
-#reportDetails span {
-    background-color: #fff;
-    padding-left: 1em;
-}
-#addForm search-field {
-    width: 100%;
-}
 #mainContainer {
     height: 100%;
     display: flex;
@@ -59,4 +50,20 @@ map {
     margin-top: -34px;
     height: 34px;
     width: 20px;
+}
+.item-floating-label .input-label {
+    display: none;
+}
+.item-floating-label .input-label.has-input {
+    color: #387ef5; /*theme color*/
+    display: table;
+    font-size: 10.5px; /*given 14px normal input height*/
+}
+textarea {
+    min-height: 34px;
+    padding-right: 24px;
+    padding-top: 9px;
+}
+#formContainer *:disabled {
+    background: none;
 }
