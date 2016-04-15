@@ -38,7 +38,7 @@ angular.module('services', [])
         updateReport: function (id, reportJson) {
             return $http({
                 url: api + 'reports/' + id,
-                method: 'POST',
+                method: 'PUT',
                 headers: {'Content-Type': 'application/json'},
                 data: {'reportJson': reportJson}
             });

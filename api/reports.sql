@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Apr 11, 2016 at 02:09 AM
+-- Generation Time: Apr 15, 2016 at 03:56 PM
 -- Server version: 5.5.47-0ubuntu0.14.04.1
 -- PHP Version: 5.5.9-1ubuntu4.14
 
@@ -36,8 +36,9 @@ CREATE TABLE IF NOT EXISTS `reports` (
   `lng` decimal(11,8) DEFAULT NULL COMMENT 'Longitude of food pickup area',
   `owner` int(11) NOT NULL COMMENT 'UID of user who owns this foodop',
   `visibility` enum('public','limited','closed') NOT NULL DEFAULT 'public' COMMENT 'Public ops are visible to all, limited ops are visible to owner and advisors, closed events are visible only to owner',
+  `active` tinyint(1) NOT NULL DEFAULT '1' COMMENT 'Whether this posting is active as described',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=38 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=51 ;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;

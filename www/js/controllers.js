@@ -412,6 +412,7 @@ angular.module('controllers', [])
     $scope.submitForm = function() {
         //TODO validation
         var reportJson = $scope.form;
+        reportJson.active = true;
         reportJson.lat = $scope.search.lat;
         reportJson.lng = $scope.search.lng;
 
@@ -484,7 +485,7 @@ angular.module('controllers', [])
     }
 })
 
-.controller('ReportCtrl', function($rootScope, $scope, $log, uiGmapGoogleMapApi, $state, API) {
+.controller('ReportCtrl', function($rootScope, $scope, $ionicLoading, $log, $ionicPopup, uiGmapGoogleMapApi, $state, API) {
     $scope.map = {
         center: {
             latitude: 0,
@@ -509,4 +510,58 @@ angular.module('controllers', [])
             $log.error('failure fetching report', errorPayload);
         }
     );
+
+    $scope.showActiveQuestion = function() {
+        var confirmPopup = $ionicPopup.confirm({
+            title: 'Is this opportunity still active?',
+            buttons: [
+                {
+                    text: 'No',
+                    type: 'button-light',
+                    onTap: function(e) {
+                        var id = $state.params.reportId
+                        var update = {
+                            active: 0
+                        }
+                        var promise = API.updateReport(id, update);
+                        promise.then(
+                            function (payload) {
+                                $log.log('op is over');
+                                $ionicLoading.show({
+                                    template: 'Thanks, this report won\'t show up anymore',
+                                    duration: 2000
+                                });
+                            },
+                            function (errorPayload) {
+                                $log.error('failure updating report', errorPayload);
+                            }
+                        );
+                    }
+                },
+                {
+                    text: 'Yes',
+                    type: 'button-positive',
+                    onTap: function(e) {
+                        var id = $state.params.reportId
+                        var update = {
+                            active: 1
+                        }
+                        var promise = API.updateReport(id, update);
+                        promise.then(
+                            function (payload) {
+                                $log.log('still tasty');
+                                $ionicLoading.show({
+                                    template: 'Thanks, we\'ll keep this report up',
+                                    duration: 2000
+                                });
+                            },
+                            function (errorPayload) {
+                                $log.error('failure updating report', errorPayload);
+                            }
+                        );
+                    }
+                }
+            ]
+        });
+    };
 });

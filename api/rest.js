@@ -153,14 +153,13 @@ REST_ROUTER.prototype.handleRoutes = function(router, connection) {
     });
 
     // Update report
-    router.put("/reports", function(req, res) {
-        var query = "UPDATE ?? SET ?? = ?, ?? = ?, ?? = ? WHERE ?? = ?";
+    router.put("/reports/:id", function(req, res) {
+        var query = "UPDATE ?? SET ?? = ? WHERE ?? = ?";
         var report = req.body.reportJson;
+        console.log(report);
         var table = ["reports",
-            "availability", report.availability,
-            "notes", report.notes,
-            "place", report.place,
-            "id", report.id
+            "active", report.active,
+            "id", req.params.id
         ];
         query = mysql.format(query, table);
         connection.query(query, function(err, rows) {
