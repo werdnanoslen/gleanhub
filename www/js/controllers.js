@@ -332,10 +332,11 @@ angular.module('controllers', [])
 })
 
 .controller('AddCtrl', function($scope, $rootScope, $ionicLoading, $log,
-        $state, uiGmapGoogleMapApi, API) {
+        $state, uiGmapGoogleMapApi, uiGmapIsReady, API) {
     var geocoder = new google.maps.Geocoder();
     // hacked because gmap's events don't include infowindow clicks
     $scope.centerSetByPlaceClick = false;
+    $scope.Gmap;
     $scope.form = {};
     $scope.mapReady = false;
     if (undefined !== $scope.search) {
@@ -384,7 +385,6 @@ angular.module('controllers', [])
         });
         navigator.geolocation.getCurrentPosition(function(pos) {
             console.log('Got pos', pos);
-            $scope.form.place = 'My location';
             $scope.search.lat = pos.coords.latitude;
             $scope.search.lng = pos.coords.longitude;
             $scope.map.position = {
@@ -403,6 +403,7 @@ angular.module('controllers', [])
                 }
             };
             $scope.centerMap();
+            $scope.updateBounds($scope.map);
             $ionicLoading.hide();
         }, function(error) {
             alert('Unable to get location: ' + error.message);
@@ -458,11 +459,17 @@ angular.module('controllers', [])
         };
     };
 
-    $scope.updateBounds = function(map) {
+    $scope.updateBounds = function() {
         if ($scope.centerSetByPlaceClick) {
             $scope.centerSetByPlaceClick = false;
+        } else if (!$scope.Gmap) {
+            uiGmapIsReady.promise(1).then(function(maps) {
+                console.log('map is ready');
+                $scope.Gmap = maps[0].map;
+                $scope.updateBounds();
+            });
         } else {
-            var latlng = map.getCenter();
+            var latlng = $scope.Gmap.getCenter();
             geocoder.geocode({'location': latlng}, function(results, status) {
                 var topResult = results[0];
                 if (google.maps.GeocoderStatus.OK === status) {
