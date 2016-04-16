@@ -403,7 +403,7 @@ angular.module('controllers', [])
                 }
             };
             $scope.centerMap();
-            $scope.updateBounds($scope.map);
+            $scope.updateBounds();
             $ionicLoading.hide();
         }, function(error) {
             alert('Unable to get location: ' + error.message);
