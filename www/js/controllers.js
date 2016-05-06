@@ -520,11 +520,15 @@ angular.module('controllers', [])
 
     $scope.showActiveQuestion = function() {
         var confirmPopup = $ionicPopup.confirm({
-            title: 'Is this opportunity still active?',
+            title: 'Report this as inactive?',
             buttons: [
                 {
-                    text: 'No',
-                    type: 'button-light',
+                    text: 'Cancel',
+                    type: 'button-light'
+                },
+                {
+                    text: 'Yes',
+                    type: 'button-positive',
                     onTap: function(e) {
                         var id = $state.params.reportId
                         var update = {
@@ -541,29 +545,10 @@ angular.module('controllers', [])
                             },
                             function (errorPayload) {
                                 $log.error('failure updating report', errorPayload);
-                            }
-                        );
-                    }
-                },
-                {
-                    text: 'Yes',
-                    type: 'button-positive',
-                    onTap: function(e) {
-                        var id = $state.params.reportId
-                        var update = {
-                            active: 1
-                        }
-                        var promise = API.updateReport(id, update);
-                        promise.then(
-                            function (payload) {
-                                $log.log('still tasty');
                                 $ionicLoading.show({
-                                    template: 'Thanks, we\'ll keep this report up',
+                                    template: 'Sorry, there was an error',
                                     duration: 2000
                                 });
-                            },
-                            function (errorPayload) {
-                                $log.error('failure updating report', errorPayload);
                             }
                         );
                     }
