@@ -41,3 +41,5 @@ angular.module('gleanhub', [
 
     $urlRouterProvider.otherwise('/map');
 });
+
+angular.module('controllers', []);

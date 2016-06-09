@@ -1,4 +1,4 @@
-angular.module('controllers', [])
+angular.module('controllers')
 
 .controller('MapCtrl', function($scope, $rootScope, $ionicLoading, $state, $log,
         uiGmapGoogleMapApi, uiGmapIsReady, API) {

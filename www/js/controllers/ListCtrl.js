@@ -1,4 +1,4 @@
-angular.module('controllers', [])
+angular.module('controllers')
 
 .controller('ListCtrl', function($scope, $rootScope, $ionicLoading, $log, API) {
     console.log('ready');

@@ -1,4 +1,4 @@
-angular.module('controllers', [])
+angular.module('controllers')
 
 .controller('ReportCtrl', function($rootScope, $scope, $ionicLoading, $log, $ionicPopup, uiGmapGoogleMapApi, $state, API) {
     $scope.map = {
