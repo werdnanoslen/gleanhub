@@ -81,7 +81,6 @@ angular.module('controllers')
                 }
             };
             $scope.centerMap();
-            $scope.updateReportsInBounds();
             $ionicLoading.hide();
         }, function(error) {
             alert('Unable to get location: ' + error.message);
