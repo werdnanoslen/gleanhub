@@ -18,10 +18,14 @@ angular.module('controllers')
         },
         events: {
             dragend: function(map) {
-                $scope.updateBounds(map);
+                $scope.search.lat = map.center.lat();
+                $scope.search.lng = map.center.lng();
+                $scope.updateBounds();
             },
             zoom_changed: function(map) {
-                $scope.updateBounds(map);
+                $scope.search.lat = map.center.lat();
+                $scope.search.lng = map.center.lng();
+                $scope.updateBounds();
             }
         },
         options: {
@@ -43,6 +47,7 @@ angular.module('controllers')
         } else {
             $scope.map.center.latitude = $scope.search.lat;
             $scope.map.center.longitude = $scope.search.lng;
+            $scope.updateBounds();
         }
     };
 
@@ -72,7 +77,6 @@ angular.module('controllers')
                 }
             };
             $scope.centerMap();
-            $scope.updateBounds();
             $ionicLoading.hide();
         }, function(error) {
             alert('Unable to get location: ' + error.message);
@@ -138,7 +142,7 @@ angular.module('controllers')
                 $scope.updateBounds();
             });
         } else {
-            var latlng = $scope.Gmap.getCenter();
+            var latlng = new google.maps.LatLng($scope.search.lat, $scope.search.lng);
             geocoder.geocode({'location': latlng}, function(results, status) {
                 var topResult = results[0];
                 if (google.maps.GeocoderStatus.OK === status) {
