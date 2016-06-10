@@ -34,11 +34,13 @@
                     <span class="input-label">Where is it?</span>
                     <div class="flex">
                         <input  type="search"
-                                g-places-autocomplete
-                                ng-model="form.place"
-                                name="place"
-                                placeholder="Where is it?"
                                 class="flex-item"
+                                g-places-autocomplete
+                                name="place"
+                                ng-blur="blurWhere($event)"
+                                ng-focus="focusWhere($event)"
+                                ng-model="form.place"
+                                placeholder="Where is it?"
                         >
                         <button class="flex-item button button-small button-icon icon ion-pinpoint"
                                 ng-click="centerOnMe()"

@@ -83,6 +83,19 @@ angular.module('controllers')
         });
     };
 
+    $scope.blurWhere = function(event) {
+        window.addEventListener('native.keyboardhide', function(){
+            window.scrollTo(0, 0);
+        });
+    };
+
+    $scope.focusWhere = function(event) {
+        var rect = event.target.getBoundingClientRect();
+        window.addEventListener('native.keyboardshow', function(){
+            window.scrollTo(0, rect.top);
+        });
+    };
+
     $scope.submitForm = function() {
         //TODO validation
         var reportJson = $scope.form;
