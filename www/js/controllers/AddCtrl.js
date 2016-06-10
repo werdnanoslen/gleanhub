@@ -85,14 +85,14 @@ angular.module('controllers')
 
     $scope.blurWhere = function(event) {
         window.addEventListener('native.keyboardhide', function(){
-            window.scrollTo(0, 0);
+            $scope.keyboardSpace = "0";
         });
     };
 
     $scope.focusWhere = function(event) {
-        var rect = event.target.getBoundingClientRect();
         window.addEventListener('native.keyboardshow', function(){
-            window.scrollTo(0, rect.top);
+            var rect = event.target.getBoundingClientRect();
+            $scope.keyboardSpace = 50-1*rect.top+"px";
         });
     };
 
