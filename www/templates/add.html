@@ -2,17 +2,18 @@
     <ion-nav-bar align-title="center" class="bar-positive">
         <ion-nav-buttons side="left">
             <button class="button button-icon icon ion-android-close"
-                    ui-sref="map">
+                    ui-sref="map" ng-hide="keyboardSpace">
             </button>
         </ion-nav-buttons>
         <ion-nav-buttons side="right">
-            <button class="button button-clear" ng-click="submitForm()">
+            <button class="button button-clear" ng-click="submitForm()"
+                    ng-hide="keyboardSpace">
                 Submit
             </button>
         </ion-nav-buttons>
     </ion-nav-bar>
     <ion-content scroll="false" id="mainContainer">
-        <div id="formContainer">
+        <div id="formContainer" ng-style="{'margin-top': keyboardSpace}">
             <form class="list" id="addForm" name="addForm">
                 <label class="item item-input item-floating-label">
                     <span class="input-label">Describe your food op</span>

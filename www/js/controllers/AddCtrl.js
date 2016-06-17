@@ -6,6 +6,7 @@ angular.module('controllers')
     // hacked because gmap's events don't include infowindow clicks
     $scope.centerSetByPlaceClick = false;
     $scope.Gmap;
+    $scope.keyboardSpace = "";
     $scope.form = {};
     $scope.mapReady = false;
     if (undefined !== $scope.search) {
@@ -84,16 +85,12 @@ angular.module('controllers')
     };
 
     $scope.blurWhere = function(event) {
-        window.addEventListener('native.keyboardhide', function(){
-            window.scrollTo(0, 0);
-        });
+        $scope.keyboardSpace = "";
     };
 
     $scope.focusWhere = function(event) {
         var rect = event.target.getBoundingClientRect();
-        window.addEventListener('native.keyboardshow', function(){
-            window.scrollTo(0, rect.top);
-        });
+        $scope.keyboardSpace = 50-1*rect.top+"px";
     };
 
     $scope.submitForm = function() {
@@ -115,6 +112,7 @@ angular.module('controllers')
     };
 
     $scope.$on('g-places-autocomplete:select', function(event, place) {
+        $scope.blurWhere();
         $scope.loading = $ionicLoading.show({
             content: 'Getting location...',
             showBackdrop: false
