@@ -19,14 +19,14 @@ angular.module('controllers')
             longitude: 0
         },
         events: {
-            dragstart: function() {
-                $scope.isDragging = true;
-            },
-            dragend: function(map) {
+            center_changed: function(map) {
                 $scope.isDragging = false;
                 $scope.search.lat = map.center.lat();
                 $scope.search.lng = map.center.lng();
                 $scope.updateBounds();
+            },
+            dragstart: function() {
+                $scope.isDragging = true;
             },
             zoom_changed: function(map) {
                 $scope.search.lat = map.center.lat();
