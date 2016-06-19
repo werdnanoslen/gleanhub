@@ -53,7 +53,7 @@
         </div>
 
         <div id="mapContainer">
-            <div id="centerMarker"></div>
+            <div id="centerMarker" ng-show="isDragging"></div>
             <ui-gmap-google-map
                  center="map.center"
                  control="map.control"
@@ -65,6 +65,11 @@
                     idkey="'map.position.id'"
                     icon="map.position.icon"
                     options="map.position.options">
+                </ui-gmap-marker>
+                <ui-gmap-marker
+                    coords="map.search.coords"
+                    idkey="'map.search.id'"
+                    options="map.search.options">
                 </ui-gmap-marker>
             </ui-gmap-google-map>
         </div>

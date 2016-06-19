@@ -6,8 +6,9 @@ angular.module('controllers')
     // hacked because gmap's events don't include infowindow clicks
     $scope.centerSetByPlaceClick = false;
     $scope.Gmap;
-    $scope.keyboardSpace = "";
+    $scope.isDragging = false;
     $scope.form = {};
+    $scope.keyboardSpace = "";
     $scope.mapReady = false;
     if (undefined !== $scope.search) {
         $scope.form.place = $scope.search.place;
@@ -18,7 +19,11 @@ angular.module('controllers')
             longitude: 0
         },
         events: {
+            dragstart: function() {
+                $scope.isDragging = true;
+            },
             dragend: function(map) {
+                $scope.isDragging = false;
                 $scope.search.lat = map.center.lat();
                 $scope.search.lng = map.center.lng();
                 $scope.updateBounds();
@@ -73,8 +78,8 @@ angular.module('controllers')
                     scale: 7
                 },
                 coords: {
-                    latitude: $scope.form.lat,
-                    longitude: $scope.form.lng
+                    latitude: pos.coords.latitude,
+                    longitude: pos.coords.longitude
                 }
             };
             $scope.centerMap();
@@ -154,6 +159,13 @@ angular.module('controllers')
             });
         } else {
             var latlng = new google.maps.LatLng($scope.search.lat, $scope.search.lng);
+            $scope.map.search = {
+                id: 'search',
+                coords: {
+                    latitude: latlng.lat(),
+                    longitude: latlng.lng()
+                }
+            };
             geocoder.geocode({'location': latlng}, function(results, status) {
                 var topResult = results[0];
                 if (google.maps.GeocoderStatus.OK === status) {
