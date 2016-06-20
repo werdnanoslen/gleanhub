@@ -34,6 +34,14 @@ angular.module('controllers')
                 $scope.updateBounds();
             }
         },
+        markers: {
+            options: {
+                icon: {
+                    url: 'img/location.png',
+                    scaledSize: new google.maps.Size(50, 50), // scaled size
+                }
+            }
+        },
         options: {
             disableDefaultUI: true
         },

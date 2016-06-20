@@ -24,6 +24,14 @@ angular.module('controllers')
                 $scope.updateBounds(map);
             }
         },
+        markers: {
+            options: {
+                icon: {
+                    url: 'img/location.png',
+                    scaledSize: new google.maps.Size(50, 50), // scaled size
+                }
+            }
+        },
         markersEvents: {
             click: function(gMarker, eventName, model) {
                 $state.go('report', {reportId: model.id});

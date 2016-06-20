@@ -6,6 +6,14 @@ angular.module('controllers')
             latitude: 0,
             longitude: 0
         },
+        markers: {
+            options: {
+                icon: {
+                    url: 'img/location.png',
+                    scaledSize: new google.maps.Size(50, 50), // scaled size
+                }
+            }
+        },
         options: {
             disableDefaultUI: true,
             disableDoubleClickZoom: true,
@@ -20,6 +28,13 @@ angular.module('controllers')
             $scope.form = report;
             $scope.map.center.latitude = report.lat;
             $scope.map.center.longitude = report.lng;
+            $scope.map.search = {
+                id: 'search',
+                coords: {
+                    latitude: report.lat,
+                    longitude: report.lng
+                }
+            };
         },
         function (errorPayload) {
             $log.error('failure fetching report', errorPayload);
