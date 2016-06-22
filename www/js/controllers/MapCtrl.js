@@ -16,6 +16,7 @@ angular.module('controllers')
             latitude: 0,
             longitude: 0
         },
+        control: {},
         events: {
             dragend: function(map) {
                 $scope.updateBounds(map);
@@ -224,11 +225,9 @@ angular.module('controllers')
             return;
         }
         if (!$scope.Gmap) {
-            uiGmapIsReady.promise(1).then(function(maps) {
-                console.log('map is ready');
-                $scope.Gmap = maps[0].map;
-                $scope.updateReportsInBounds();
-            });
+            console.log('map is ready');
+            $scope.Gmap = $scope.map.control.getGMap();
+            $scope.updateReportsInBounds();
         } else {
             console.log('update reports');
             var bounds = $scope.Gmap.getBounds();
