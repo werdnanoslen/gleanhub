@@ -1,7 +1,7 @@
 angular.module('controllers')
 
 .controller('AddCtrl', function($scope, $rootScope, $ionicLoading, $log,
-        $state, uiGmapGoogleMapApi, uiGmapIsReady, API) {
+        $state, $timeout, uiGmapGoogleMapApi, uiGmapIsReady, API) {
     var geocoder = new google.maps.Geocoder();
     // hacked because gmap's events don't include infowindow clicks
     $scope.centerSetByPlaceClick = false;
@@ -18,6 +18,7 @@ angular.module('controllers')
             latitude: 0,
             longitude: 0
         },
+        control: {},
         events: {
             center_changed: function(map) {
                 $scope.isDragging = false;
@@ -160,9 +161,8 @@ angular.module('controllers')
         if ($scope.centerSetByPlaceClick) {
             $scope.centerSetByPlaceClick = false;
         } else if (!$scope.Gmap) {
-            uiGmapIsReady.promise(1).then(function(maps) {
-                console.log('map is ready');
-                $scope.Gmap = maps[0].map;
+            $timeout(function() {
+                $scope.Gmap = $scope.map.control.getGMap();
                 $scope.updateBounds();
             });
         } else {
@@ -187,8 +187,8 @@ angular.module('controllers')
                     console.error('geocode error: ', status);
                     $scope.form.place = latlng.toUrlValue();
                 }
-                $scope.search.lat = latlng.lat;
-                $scope.search.lng = latlng.lng;
+                $scope.search.lat = latlng.lat();
+                $scope.search.lng = latlng.lng();
                 //TODO: handle scope updates to async model better than this
                 $scope.$apply();
             });

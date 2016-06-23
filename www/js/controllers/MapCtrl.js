@@ -51,18 +51,6 @@ angular.module('controllers')
         $scope.updateReportsInBounds();
     });
 
-    $scope.$on('$stateChangeSuccess', function(event,toState,toParams,fromState) {
-        // "" for name indicates that it's the initial transition.
-        // Not ideal, but that's how Angular works atm :/
-        // https://github.com/angular-ui/ui-router/issues/1307#issuecomment-59570535
-        if ('' !== fromState.name && 'map' === toState.name) {
-            if ($scope.mapReady) {
-                $scope.centerMap();
-                $scope.updateReportsInBounds();
-            }
-        }
-    });
-
     $scope.centerOnMe = function() {
         console.log('Getting current location');
         $scope.loading = $ionicLoading.show({
