@@ -196,45 +196,38 @@ angular.module('controllers')
                     longitude: $scope.search.lng
                 }
             };
-            //TODO: handle scope updates to async model better than this
-            $scope.$apply();
-            $scope.updateReportsInBounds();
-        });
-    }
-
-    $scope.updateReportsInBounds = function() {
-        var lat = $scope.search.lat;
-        var lng = $scope.search.lng;
-        if (undefined === lat | undefined === lng) {
-            return;
-        }
-        var bounds = $scope.Gmap.getBounds();
-        var ne = bounds.getNorthEast();
-        var sw = bounds.getSouthWest();
-        var distance = Math.sqrt(Math.pow(((69.1/1.61) * (ne.lat() - sw.lat())), 2) + Math.pow(((53/1.61) * (ne.lng() - sw.lng())), 2))/2;
-        $scope.reports.markers = [];
-        var promise = API.getReportsNearby($scope.search.lat, $scope.search.lng, distance);
-        promise.then(
-            function (payload) {
-                var reports = payload.data.reports;
-                console.log('fetched reports', reports);
-                for (var i=0; i<reports.length; ++i) {
-                    var report = reports[i];
-                    var distance = (0 == report.distance) ? '<0.1' : report.distance;
-                    var marker = {
-                        latitude: report.lat,
-                        longitude: report.lng,
-                        title: report.place,
-                        id: report.id,
-                        distance: distance
-                    };
-                    $scope.reports.markers.push(marker);
-                }
-                $scope.filterReports();
-            },
-            function (errorPayload) {
-                $log.error('failure getting reports', errorPayload);
+            if (undefined === $scope.search.lat | undefined === $scope.search.lng) {
+                return;
             }
-        );
+            $scope.$apply();
+            var bounds = $scope.Gmap.getBounds();
+            var ne = bounds.getNorthEast();
+            var sw = bounds.getSouthWest();
+            var distance = Math.sqrt(Math.pow(((69.1/1.61) * (ne.lat() - sw.lat())), 2) + Math.pow(((53/1.61) * (ne.lng() - sw.lng())), 2))/2;
+            $scope.reports.markers = [];
+            var promise = API.getReportsNearby($scope.search.lat, $scope.search.lng, distance);
+            promise.then(
+                function (payload) {
+                    var reports = payload.data.reports;
+                    console.log('fetched reports', reports);
+                    for (var i=0; i<reports.length; ++i) {
+                        var report = reports[i];
+                        var distance = (0 == report.distance) ? '<0.1' : report.distance;
+                        var marker = {
+                            latitude: report.lat,
+                            longitude: report.lng,
+                            title: report.place,
+                            id: report.id,
+                            distance: distance
+                        };
+                        $scope.reports.markers.push(marker);
+                    }
+                    $scope.filterReports();
+                },
+                function (errorPayload) {
+                    $log.error('failure getting reports', errorPayload);
+                }
+            );
+        });
     };
 })
