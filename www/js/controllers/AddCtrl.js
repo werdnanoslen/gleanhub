@@ -22,17 +22,13 @@ angular.module('controllers')
         events: {
             center_changed: function(map) {
                 $scope.isDragging = false;
-                $scope.search.lat = map.center.lat();
-                $scope.search.lng = map.center.lng();
-                $scope.updateBounds();
+                $scope.updateBounds(map);
             },
             dragstart: function() {
                 $scope.isDragging = true;
             },
             zoom_changed: function(map) {
-                $scope.search.lat = map.center.lat();
-                $scope.search.lng = map.center.lng();
-                $scope.updateBounds();
+                $scope.updateBounds(map);
             }
         },
         markers: {
@@ -62,7 +58,6 @@ angular.module('controllers')
         } else {
             $scope.map.center.latitude = $scope.search.lat;
             $scope.map.center.longitude = $scope.search.lng;
-            $scope.updateBounds();
         }
     };
 
@@ -157,16 +152,14 @@ angular.module('controllers')
         };
     };
 
-    $scope.updateBounds = function() {
+    $scope.updateBounds = function(map) {
+        $scope.Gmap = map;
+        $scope.search.lat = map.center.lat();
+        $scope.search.lng = map.center.lng();
+        var latlng = new google.maps.LatLng($scope.search.lat, $scope.search.lng);
         if ($scope.centerSetByPlaceClick) {
             $scope.centerSetByPlaceClick = false;
-        } else if (!$scope.Gmap) {
-            $timeout(function() {
-                $scope.Gmap = $scope.map.control.getGMap();
-                $scope.updateBounds();
-            });
         } else {
-            var latlng = new google.maps.LatLng($scope.search.lat, $scope.search.lng);
             $scope.map.search = {
                 id: 'search',
                 coords: {
@@ -187,6 +180,8 @@ angular.module('controllers')
                     console.error('geocode error: ', status);
                     $scope.form.place = latlng.toUrlValue();
                 }
+                $scope.map.center.latitude = latlng.lat();
+                $scope.map.center.longitude = latlng.lng();
                 $scope.search.lat = latlng.lat();
                 $scope.search.lng = latlng.lng();
                 //TODO: handle scope updates to async model better than this
