@@ -55,7 +55,8 @@ angular.module('controllers')
                     var marker = {
                         latitude: report.lat,
                         longitude: report.lng,
-                        title: report.place,
+                        place: report.place,
+                        notes: report.notes,
                         id: report.id,
                         distance: distance
                     };

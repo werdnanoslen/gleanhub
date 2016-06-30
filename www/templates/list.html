@@ -29,9 +29,12 @@
             <a  class="item"
                 ng-repeat="marker in reports.markers"
                 ui-sref="report({reportId: marker.id})">
-                {{marker.title}}
                 <span class="item-note">
                     {{marker.distance}} km
+                </span>
+                <span>
+                    <h2>{{marker.place}}</h2>
+                    <p>{{marker.notes}}</p>
                 </span>
             </a>
         </div>
