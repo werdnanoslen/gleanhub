@@ -1,7 +1,8 @@
 angular.module('controllers')
 
 .controller('AddCtrl', function($scope, $rootScope, $ionicLoading, $log,
-        $state, $timeout, uiGmapGoogleMapApi, uiGmapIsReady, API) {
+        $state, $timeout, $ionicHistory, uiGmapGoogleMapApi, uiGmapIsReady, API) {
+    $scope.noGoingBack = (null === $ionicHistory.backView()) ? true : false;
     var geocoder = new google.maps.Geocoder();
     // hacked because gmap's events don't include infowindow clicks
     $scope.centerSetByPlaceClick = false;
@@ -44,6 +45,10 @@ angular.module('controllers')
         },
         zoom: 15
     };
+
+    $scope.$on('$stateChangeSuccess', function(event, toState, toParams, fromState, fromParams) {
+        $scope.noGoingBack = (null === $ionicHistory.backView()) ? true : false;
+    });
 
     uiGmapGoogleMapApi.then(function(uiMap) {
         $scope.mapReady = true;

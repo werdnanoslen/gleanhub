@@ -1,6 +1,8 @@
 angular.module('controllers')
 
-.controller('ReportCtrl', function($rootScope, $scope, $ionicLoading, $log, $ionicPopup, uiGmapGoogleMapApi, $state, API) {
+.controller('ReportCtrl', function($rootScope, $scope, $ionicLoading, $log, $ionicPopup,
+            $state, $ionicHistory, uiGmapGoogleMapApi, API) {
+    $scope.noGoingBack = (null === $ionicHistory.backView()) ? true : false;
     $scope.map = {
         center: {
             latitude: 0,
@@ -40,6 +42,10 @@ angular.module('controllers')
             $log.error('failure fetching report', errorPayload);
         }
     );
+
+    $scope.$on('$stateChangeSuccess', function(event, toState, toParams, fromState, fromParams) {
+        $scope.noGoingBack = (null === $ionicHistory.backView()) ? true : false;
+    });
 
     $scope.showActiveQuestion = function() {
         var confirmPopup = $ionicPopup.confirm({

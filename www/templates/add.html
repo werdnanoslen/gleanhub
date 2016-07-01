@@ -1,9 +1,8 @@
 <ion-view view-title="New food op">
     <ion-nav-bar align-title="center" class="bar-positive">
-        <ion-nav-buttons side="left">
-            <button class="button button-icon icon ion-android-close"
-                    ui-sref="map" ng-hide="keyboardSpace">
-            </button>
+        <ion-nav-back-button ng-hide="keyboardSpace"></ion-nav-back-button>
+        <ion-nav-buttons side="left" ng-hide="keyboardSpace">
+            <button class="button button-icon icon ion-map" ui-sref="map" ng-show="noGoingBack"></button>
         </ion-nav-buttons>
         <ion-nav-buttons side="right">
             <button class="button button-clear" ng-click="submitForm()"
