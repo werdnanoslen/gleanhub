@@ -26,11 +26,7 @@ REST_ROUTER.prototype.handleRoutes = function(router, connection) {
                res.status(500).json({
                    "error": err
                });
-            } else if (rows.length < 1) {
-                res.status(404).json({
-                    "error": 'no reports'
-                });
-            } else {
+           } else {
                 res.json({
                     "reports": rows
                 });
@@ -47,10 +43,6 @@ REST_ROUTER.prototype.handleRoutes = function(router, connection) {
             if (err) {
                 res.status(500).json({
                     "error": err
-                });
-            } else if (rows.length < 1) {
-                res.status(404).json({
-                    "error": 'report does not exist'
                 });
             } else {
                 res.json({
@@ -76,9 +68,7 @@ REST_ROUTER.prototype.handleRoutes = function(router, connection) {
                     "error": err
                 });
             } else if (rows.length < 1) {
-                res.status(404).json({
-                    "error": 'report does not exist with that criteria'
-                });
+                res.sendStatus(204);
             } else {
                 res.json({
                     "reports": rows
@@ -119,9 +109,7 @@ REST_ROUTER.prototype.handleRoutes = function(router, connection) {
                     "error": err
                 });
             } else if (rows.length < 1) {
-                res.status(404).json({
-                    "error": "no reports with that criteria"
-                });
+                res.sendStatus(204);
             } else {
                 res.json({
                     "reports": rows

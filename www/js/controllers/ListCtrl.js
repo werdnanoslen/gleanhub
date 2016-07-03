@@ -47,20 +47,23 @@ angular.module('controllers')
         var promise = API.getReportsNearby($scope.search.lat, $scope.search.lng, 10);
         promise.then(
             function (payload) {
-                console.log(payload);
-                var reports = payload.data.reports;
-                for (var i=0; i<reports.length; ++i) {
-                    var report = reports[i];
-                    var distance = (0 == report.distance) ? '<0.1' : report.distance;
-                    var marker = {
-                        latitude: report.lat,
-                        longitude: report.lng,
-                        place: report.place,
-                        notes: report.notes,
-                        id: report.id,
-                        distance: distance
-                    };
-                    $scope.reports.markers.push(marker);
+                if (204 === payload.status) {
+                    console.log("no reports in bounds");
+                } else {
+                    var reports = payload.data.reports;
+                    for (var i=0; i<reports.length; ++i) {
+                        var report = reports[i];
+                        var distance = (0 == report.distance) ? '<0.1' : report.distance;
+                        var marker = {
+                            latitude: report.lat,
+                            longitude: report.lng,
+                            place: report.place,
+                            notes: report.notes,
+                            id: report.id,
+                            distance: distance
+                        };
+                        $scope.reports.markers.push(marker);
+                    }
                 }
             },
             function (errorPayload) {

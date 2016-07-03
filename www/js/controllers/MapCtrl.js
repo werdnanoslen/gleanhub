@@ -97,13 +97,17 @@ angular.module('controllers')
             var promise = API.getReports({"*": filterCriteria});
             promise.then(
                 function (payload) {
-                    var reports = payload.data.reports;
-                    var markers = $scope.reports.markers;
-                    $scope.reports.markers = [];
-                    for (var i=0; i<markers.length; ++i) {
-                        for (var j=0; j<reports.length; ++j) {
-                            if (markers[i].id === reports[j].id) {
-                                $scope.reports.markers.push(reports[j]);
+                    if (204 === payload.status) {
+                        console.log('no reports with that criteria');
+                    } else {
+                        var reports = payload.data.reports;
+                        var markers = $scope.reports.markers;
+                        $scope.reports.markers = [];
+                        for (var i=0; i<markers.length; ++i) {
+                            for (var j=0; j<reports.length; ++j) {
+                                if (markers[i].id === reports[j].id) {
+                                    $scope.reports.markers.push(reports[j]);
+                                }
                             }
                         }
                     }
@@ -193,21 +197,25 @@ angular.module('controllers')
                 var promise = API.getReportsNearby($scope.search.lat, $scope.search.lng, distance);
                 promise.then(
                     function (payload) {
-                        var reports = payload.data.reports;
-                        console.log('fetched reports', reports);
-                        for (var i=0; i<reports.length; ++i) {
-                            var report = reports[i];
-                            var distance = (0 == report.distance) ? '<0.1' : report.distance;
-                            var marker = {
-                                latitude: report.lat,
-                                longitude: report.lng,
-                                title: report.place,
-                                id: report.id,
-                                distance: distance
-                            };
-                            $scope.reports.markers.push(marker);
+                        if (204 === payload.status) {
+                            console.log("no reports in bounds");
+                        } else {
+                            var reports = payload.data.reports;
+                            console.log('fetched reports', payload);
+                            for (var i=0; i<reports.length; ++i) {
+                                var report = reports[i];
+                                var distance = (0 == report.distance) ? '<0.1' : report.distance;
+                                var marker = {
+                                    latitude: report.lat,
+                                    longitude: report.lng,
+                                    title: report.place,
+                                    id: report.id,
+                                    distance: distance
+                                };
+                                $scope.reports.markers.push(marker);
+                            }
+                            $scope.filterReports();
                         }
-                        $scope.filterReports();
                     },
                     function (errorPayload) {
                         $log.error('failure getting reports', errorPayload);
