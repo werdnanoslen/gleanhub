@@ -98,7 +98,7 @@ angular.module('controllers')
             promise.then(
                 function (payload) {
                     if (204 === payload.status) {
-                        console.log('no reports with that criteria');
+                        console.log("no reports with that criteria");
                     } else {
                         var reports = payload.data.reports;
                         var markers = $scope.reports.markers;

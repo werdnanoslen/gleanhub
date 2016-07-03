@@ -37,18 +37,23 @@ angular.module('controllers')
         });
     };
 
-    $scope.updateReportsInBounds = function() {
+    $scope.updateReportsInBounds = function(kmAway=5) {
         var lat = $scope.search.lat;
         var lng = $scope.search.lng;
         if (undefined === lat | undefined === lng) {
             return;
         }
         $scope.reports.markers = [];
-        var promise = API.getReportsNearby($scope.search.lat, $scope.search.lng, 10);
+        var promise = API.getReportsNearby($scope.search.lat, $scope.search.lng, kmAway);
         promise.then(
             function (payload) {
                 if (204 === payload.status) {
                     console.log("no reports in bounds");
+                    if (kmAway <= 50000) {//based on earth circumference
+                        $scope.updateReportsInBounds(kmAway*10);
+                    } else {
+                        console.log("there don't seem to be any reports at all");
+                    }
                 } else {
                     var reports = payload.data.reports;
                     for (var i=0; i<reports.length; ++i) {
