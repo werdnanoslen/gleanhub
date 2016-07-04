@@ -1,7 +1,7 @@
 angular.module('controllers')
 
 .controller('ReportCtrl', function($rootScope, $scope, $ionicLoading, $log, $ionicPopup,
-            $state, $ionicHistory, uiGmapGoogleMapApi, API) {
+            $state, $ionicHistory, $ionicPopover, $location, uiGmapGoogleMapApi, API) {
     $scope.noGoingBack = (null === $ionicHistory.backView()) ? true : false;
     $scope.map = {
         center: {
@@ -23,6 +23,13 @@ angular.module('controllers')
         },
         zoom: 15
     };
+    $ionicPopover.fromTemplateUrl('templates/share.html', {
+        scope: $scope,
+    }).then(function(popover) {
+        $scope.popover = popover;
+    });
+    $scope.location = encodeURIComponent($location.absUrl());
+
     var promise = API.getReport($state.params.reportId);
     promise.then(
         function (payload) {

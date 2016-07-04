@@ -77,3 +77,6 @@ textarea {
 #formContainer *:disabled {
     background: none;
 }
+ion-popover-view, .popover {
+    height: 120px;
+}

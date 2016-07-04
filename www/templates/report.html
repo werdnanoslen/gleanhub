@@ -4,6 +4,11 @@
         <ion-nav-buttons side="left">
             <button class="button button-icon icon ion-map" ui-sref="map" ng-show="noGoingBack"></button>
         </ion-nav-buttons>
+        <ion-nav-buttons side="right">
+            <button class="button button-icon icon ion-share"
+                    ng-click="popover.show($event)">
+            </button>
+        </ion-nav-buttons>
     </ion-nav-bar>
     <ion-content scroll="false" id="mainContainer">
         <div id="formContainer">
