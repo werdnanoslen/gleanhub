@@ -153,7 +153,6 @@ angular.module('controllers')
     };
 
     $scope.submitSearch = function(keyEvent) {
-        console.log(keyEvent);
         if (undefined === keyEvent) {
             $scope.search.place = filterCriteria;
         } else if (13 === keyEvent.which) {
