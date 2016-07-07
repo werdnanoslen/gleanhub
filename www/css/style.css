@@ -21,15 +21,17 @@ map {
     height: 100%;
     width: 100%;
 }
-#searchBar {
-    line-height: 2;
-}
 #searchBar input {
     font: inherit;
-    padding: 0 4px;
+    margin-right: 4px;
+    width: 100%;
 }
 #searchBar button {
-    padding-right: 0;
+    margin-right: -7px;
+    padding: 0;
+}
+*[view-title="Map"] #searchBar button {
+    width: 0;
 }
 #mainContainer {
     /*height: 100%;*/

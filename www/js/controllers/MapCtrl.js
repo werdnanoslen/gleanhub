@@ -5,7 +5,6 @@ angular.module('controllers')
     var geocoder = new google.maps.Geocoder();
     var filterCriteria;
     $scope.Gmap;
-    $scope.mapReady = false;
     $scope.centerSetByPlaceClick = false;
     $scope.search = {};
     $scope.reports = {
@@ -41,11 +40,17 @@ angular.module('controllers')
         options: {
             disableDefaultUI: true
         },
+        searchbox: {
+            parentdiv: "searchBarBox",
+            events: {
+                places_changed: function (searchBox) {}
+            },
+            template:'templates/searchbox.html'
+        },
         zoom: 15
     };
 
     uiGmapGoogleMapApi.then(function(uiMap) {
-        $scope.mapReady = true;
         $scope.centerMap();
         $scope.overrideInfoWindowClick();
     });
