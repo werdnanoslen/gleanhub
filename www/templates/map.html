@@ -28,9 +28,11 @@
             pan="true"
             zoom="map.zoom">
             <ui-gmap-search-box
-                template="map.searchbox.template"
+                ng-model="search.place"
+                events="map.searchbox.events"
+                options="map.searchbox.options"
                 parentdiv="map.searchbox.parentdiv"
-                events="map.searchbox.events">
+                template="map.searchbox.template">
             </ui-gmap-search-box>
             <ui-gmap-marker
                 coords="map.position.coords"
@@ -39,9 +41,16 @@
                 options="map.position.options">
             </ui-gmap-marker>
             <ui-gmap-markers
-                events="map.markersEvents"
+                events="reports.events"
                 models="reports.markers"
-                options="map.markers.options"
+                options="reports.options"
+                coords="'self'"
+                doCluster="true">
+            </ui-gmap-markers>
+            <ui-gmap-markers
+                events="suggestions.events"
+                models="suggestions.markers"
+                options="suggestions.options"
                 coords="'self'"
                 doCluster="true">
             </ui-gmap-markers>
