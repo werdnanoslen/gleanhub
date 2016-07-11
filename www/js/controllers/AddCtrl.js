@@ -5,7 +5,6 @@ angular.module('controllers')
     $scope.noGoingBack = (null === $ionicHistory.backView()) ? true : false;
     var geocoder = new google.maps.Geocoder();
     // hacked because gmap's events don't include infowindow clicks
-    $scope.centerSetByPlaceClick = false;
     $scope.Gmap;
     $scope.isDragging = false;
     $scope.form = {};
@@ -41,7 +40,8 @@ angular.module('controllers')
             }
         },
         options: {
-            disableDefaultUI: true
+            disableDefaultUI: true,
+            clickableIcons: false
         },
         zoom: 15
     };
@@ -53,7 +53,6 @@ angular.module('controllers')
     uiGmapGoogleMapApi.then(function(uiMap) {
         $scope.mapReady = true;
         $scope.centerMap();
-        $scope.overrideInfoWindowClick();
     });
 
     $scope.centerMap = function() {
@@ -138,60 +137,37 @@ angular.module('controllers')
         $ionicLoading.hide();
     });
 
-    $scope.overrideInfoWindowClick = function() {
-        var set = google.maps.InfoWindow.prototype.set;
-        google.maps.InfoWindow.prototype.set = function (key, val) {
-            if (key === 'map') {
-                if (!this.get('noSupress')) {
-                    $scope.search.lat = this.position.lat();
-                    $scope.search.lng = this.position.lng();
-                    var place = this.content.childNodes[0].childNodes[1].innerText.trim();
-                    $scope.centerSetByPlaceClick = true;
-                    $scope.centerMap();
-                    $scope.form.place = place;
-                    $scope.$apply();
-                    return;
-                }
-            }
-            set.apply(this, arguments);
-        };
-    };
-
     $scope.updateBounds = function(map) {
         $scope.Gmap = map;
         $scope.search.lat = map.center.lat();
         $scope.search.lng = map.center.lng();
         var latlng = new google.maps.LatLng($scope.search.lat, $scope.search.lng);
-        if ($scope.centerSetByPlaceClick) {
-            $scope.centerSetByPlaceClick = false;
-        } else {
-            $scope.map.search = {
-                id: 'search',
-                coords: {
-                    latitude: latlng.lat(),
-                    longitude: latlng.lng()
-                }
-            };
-            geocoder.geocode({'location': latlng}, function(results, status) {
-                var topResult = results[0];
-                if (google.maps.GeocoderStatus.OK === status) {
-                    if ('ROOFTOP' === topResult.geometry.location_type) {
-                        $scope.form.place = topResult.formatted_address;
-                    } else {
-                        console.log('No exact address for this location: ', latlng);
-                        $scope.form.place = latlng.toUrlValue();
-                    }
+        $scope.map.search = {
+            id: 'search',
+            coords: {
+                latitude: latlng.lat(),
+                longitude: latlng.lng()
+            }
+        };
+        geocoder.geocode({'location': latlng}, function(results, status) {
+            var topResult = results[0];
+            if (google.maps.GeocoderStatus.OK === status) {
+                if ('ROOFTOP' === topResult.geometry.location_type) {
+                    $scope.form.place = topResult.formatted_address;
                 } else {
-                    console.error('geocode error: ', status);
+                    console.log('No exact address for this location: ', latlng);
                     $scope.form.place = latlng.toUrlValue();
                 }
-                $scope.map.center.latitude = latlng.lat();
-                $scope.map.center.longitude = latlng.lng();
-                $scope.search.lat = latlng.lat();
-                $scope.search.lng = latlng.lng();
-                //TODO: handle scope updates to async model better than this
-                $scope.$apply();
-            });
-        }
+            } else {
+                console.error('geocode error: ', status);
+                $scope.form.place = latlng.toUrlValue();
+            }
+            $scope.map.center.latitude = latlng.lat();
+            $scope.map.center.longitude = latlng.lng();
+            $scope.search.lat = latlng.lat();
+            $scope.search.lng = latlng.lng();
+            //TODO: handle scope updates to async model better than this
+            $scope.$apply();
+        });
     }
 })

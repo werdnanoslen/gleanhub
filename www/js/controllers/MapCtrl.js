@@ -5,7 +5,6 @@ angular.module('controllers')
     var geocoder = new google.maps.Geocoder();
     var filterCriteria;
     $scope.Gmap;
-    $scope.centerSetByPlaceClick = false;
     $scope.search = {};
     $scope.reports = {
         'events': {
@@ -56,7 +55,8 @@ angular.module('controllers')
             }
         },
         options: {
-            disableDefaultUI: true
+            disableDefaultUI: true,
+            clickableIcons: false
         },
         searchbox: {
             events: {
@@ -86,7 +86,6 @@ angular.module('controllers')
 
     uiGmapGoogleMapApi.then(function(uiMap) {
         $scope.centerMap();
-        $scope.overrideInfoWindowClick();
     });
 
     $scope.centerOnMe = function() {
@@ -172,25 +171,6 @@ angular.module('controllers')
         $ionicLoading.hide();
     });
 
-    $scope.overrideInfoWindowClick = function() {
-        var set = google.maps.InfoWindow.prototype.set;
-        google.maps.InfoWindow.prototype.set = function (key, val) {
-            if (key === 'map') {
-                if (!this.get('noSupress')) {
-                    $scope.search.lat = this.position.lat();
-                    $scope.search.lng = this.position.lng();
-                    var place = this.content.childNodes[0].childNodes[1].innerText.trim();
-                    $scope.centerSetByPlaceClick = true;
-                    $scope.centerMap();
-                    $scope.search.place = place;
-                    $scope.$apply();
-                    return;
-                }
-            }
-            set.apply(this, arguments);
-        };
-    };
-
     $scope.submitSearch = function(keyEvent) {
         if (undefined === keyEvent) {
             $scope.search.place = filterCriteria;
@@ -204,63 +184,54 @@ angular.module('controllers')
         $scope.search.lat = map.center.lat();
         $scope.search.lng = map.center.lng();
         var latlng = new google.maps.LatLng($scope.search.lat, $scope.search.lng);
-        if ($scope.centerSetByPlaceClick) {
-            $scope.centerSetByPlaceClick = false;
-        } else {
-            geocoder.geocode({'location': latlng}, function(results, status) {
-                var topResult = results[0];
-                if (google.maps.GeocoderStatus.OK === status) {
-                    if ('ROOFTOP' === topResult.geometry.location_type) {
-                        $scope.search.place = topResult.formatted_address;
-                    } else {
-                        console.log('No exact address for this location: ', latlng);
-                        $scope.search.place = latlng.toUrlValue();
-                    }
+        geocoder.geocode({'location': latlng}, function(results, status) {
+            var topResult = results[0];
+            if (google.maps.GeocoderStatus.OK === status) {
+                if ('ROOFTOP' === topResult.geometry.location_type) {
+                    $scope.search.place = topResult.formatted_address;
                 } else {
-                    console.error('geocode error: ', status);
+                    console.log('No exact address for this location: ', latlng);
                     $scope.search.place = latlng.toUrlValue();
                 }
-            });
-            $scope.map.center.latitude = latlng.lat();
-            $scope.map.center.longitude = latlng.lng();
-            $scope.search.lat = latlng.lat();
-            $scope.search.lng = latlng.lng();
-            $scope.$apply();
+            } else {
+                console.error('geocode error: ', status);
+                $scope.search.place = latlng.toUrlValue();
+            }
+        });
 
-            var bounds = $scope.Gmap.getBounds();
-            var ne = bounds.getNorthEast();
-            var sw = bounds.getSouthWest();
-            $scope.map.searchbox.options.bounds = new google.maps.LatLngBounds(sw, ne);
+        var bounds = $scope.Gmap.getBounds();
+        var ne = bounds.getNorthEast();
+        var sw = bounds.getSouthWest();
+        $scope.map.searchbox.options.bounds = new google.maps.LatLngBounds(sw, ne);
 
-            var distance = Math.sqrt(Math.pow(((69.1/1.61) * (ne.lat() - sw.lat())), 2) + Math.pow(((53/1.61) * (ne.lng() - sw.lng())), 2))/2;
-            $scope.reports.markers = [];
-            var promise = API.getReportsNearby(latlng.lat(), latlng.lng(), distance);
-            promise.then(
-                function (payload) {
-                    if (204 === payload.status) {
-                        console.log("no reports in bounds");
-                    } else {
-                        var reports = payload.data.reports;
-                        console.log('fetched reports', payload);
-                        for (var i=0; i<reports.length; ++i) {
-                            var report = reports[i];
-                            var distance = (0 == report.distance) ? '<0.1' : report.distance;
-                            var marker = {
-                                latitude: report.lat,
-                                longitude: report.lng,
-                                title: report.place,
-                                id: report.id,
-                                distance: distance
-                            };
-                            $scope.reports.markers.push(marker);
-                        }
-                        $scope.filterReports();
+        var distance = Math.sqrt(Math.pow(((69.1/1.61) * (ne.lat() - sw.lat())), 2) + Math.pow(((53/1.61) * (ne.lng() - sw.lng())), 2))/2;
+        $scope.reports.markers = [];
+        var promise = API.getReportsNearby(latlng.lat(), latlng.lng(), distance);
+        promise.then(
+            function (payload) {
+                if (204 === payload.status) {
+                    console.log("no reports in bounds");
+                } else {
+                    var reports = payload.data.reports;
+                    console.log('fetched reports', payload);
+                    for (var i=0; i<reports.length; ++i) {
+                        var report = reports[i];
+                        var distance = (0 == report.distance) ? '<0.1' : report.distance;
+                        var marker = {
+                            latitude: report.lat,
+                            longitude: report.lng,
+                            title: report.place,
+                            id: report.id,
+                            distance: distance
+                        };
+                        $scope.reports.markers.push(marker);
                     }
-                },
-                function (errorPayload) {
-                    $log.error('failure getting reports', errorPayload);
+                    $scope.filterReports();
                 }
-            );
-        }
+            },
+            function (errorPayload) {
+                $log.error('failure getting reports', errorPayload);
+            }
+        );
     };
 })
