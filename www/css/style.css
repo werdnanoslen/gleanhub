@@ -21,14 +21,23 @@ map {
     height: 100%;
     width: 100%;
 }
+#searchBarBox {
+    position: relative;
+}
+#searchBar > button {
+    margin-right: -7px;
+    padding: 0;
+}
+#searchBarBox button {
+    float: right;
+    position: absolute;
+    right: 15px;
+    top: 3px;
+}
 #searchBar input {
     font: inherit;
     margin-right: 4px;
     width: 100%;
-}
-#searchBar button {
-    margin-right: -7px;
-    padding: 0;
 }
 *[view-title="Map"] #searchBar button {
     width: 0;

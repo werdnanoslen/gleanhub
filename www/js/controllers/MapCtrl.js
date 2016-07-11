@@ -6,6 +6,7 @@ angular.module('controllers')
     var filterCriteria;
     $scope.Gmap;
     $scope.search = {};
+    $scope.explicitSearch = false;
     $scope.reports = {
         'events': {
             click: function(gMarker, eventName, model) {
@@ -23,11 +24,9 @@ angular.module('controllers')
     $scope.suggestions = {
         'events': {
             click: function(gMarker, eventName, model) {
-                $scope.search = {
-                    'lat': model.latitude,
-                    'lng': model.longitude,
-                    'place': model.title
-                };
+                $scope.search.lat = model.latitude;
+                $scope.search.lng = model.longitude;
+                $scope.search.place = model.title;
                 $scope.centerMap();
                 $scope.$apply();
             }
@@ -48,9 +47,13 @@ angular.module('controllers')
         control: {},
         events: {
             center_changed: function(map) {
+                var bounds = map.getBounds();
+                $scope.map.searchbox.options.bounds = bounds;
                 $scope.updateBounds(map);
             },
             zoom_changed: function(map) {
+                var bounds = map.getBounds();
+                $scope.map.searchbox.options.bounds = bounds;
                 $scope.updateBounds(map);
             }
         },
@@ -61,7 +64,14 @@ angular.module('controllers')
         searchbox: {
             events: {
                 places_changed: function (searchBox) {
+                    filterCriteria = undefined;
+                    $scope.explicitSearch = true;
+                    $scope.loading = $ionicLoading.show({
+                        content: 'Getting location...',
+                        showBackdrop: false
+                    });
                     var places = searchBox.getPlaces();
+                    var bounds = new google.maps.LatLngBounds();
                     for (var i=0; i<places.length; ++i){
                         var place = places[i];
                         var marker = {
@@ -70,9 +80,12 @@ angular.module('controllers')
                             longitude: place.geometry.location.lng(),
                             title: place.name
                         };
-                        // marker.setIcon('img/location-outline.png')
+                        var latlng = new google.maps.LatLng(marker.latitude, marker.longitude);
+                        bounds.extend(latlng);
                         $scope.suggestions.markers.push(marker);
                     }
+                    $scope.Gmap.fitBounds(bounds);
+                    $ionicLoading.hide();
                 }
             },
             options: {
@@ -158,18 +171,11 @@ angular.module('controllers')
         }
     }
 
-    $scope.$on('g-places-autocomplete:select', function(event, place) {
-        filterCriteria = undefined;
-        $scope.loading = $ionicLoading.show({
-            content: 'Getting location...',
-            showBackdrop: false
-        });
-        $scope.search.place = place.name + ", " + place.formatted_address;
-        $scope.search.lat = place.geometry.location.lat();
-        $scope.search.lng = place.geometry.location.lng();
-        $scope.centerMap();
-        $ionicLoading.hide();
-    });
+    $scope.clearSearch = function() {
+        $scope.explicitSearch = false;
+        $scope.search.place = "";
+        $scope.suggestions.markers = [];
+    }
 
     $scope.submitSearch = function(keyEvent) {
         if (undefined === keyEvent) {
@@ -184,21 +190,6 @@ angular.module('controllers')
         $scope.search.lat = map.center.lat();
         $scope.search.lng = map.center.lng();
         var latlng = new google.maps.LatLng($scope.search.lat, $scope.search.lng);
-        geocoder.geocode({'location': latlng}, function(results, status) {
-            var topResult = results[0];
-            if (google.maps.GeocoderStatus.OK === status) {
-                if ('ROOFTOP' === topResult.geometry.location_type) {
-                    $scope.search.place = topResult.formatted_address;
-                } else {
-                    console.log('No exact address for this location: ', latlng);
-                    $scope.search.place = latlng.toUrlValue();
-                }
-            } else {
-                console.error('geocode error: ', status);
-                $scope.search.place = latlng.toUrlValue();
-            }
-        });
-
         var bounds = $scope.Gmap.getBounds();
         var ne = bounds.getNorthEast();
         var sw = bounds.getSouthWest();
