@@ -46,6 +46,21 @@ angular.module('controllers')
         zoom: 15
     };
 
+    var autocomplete = new google.maps.places.Autocomplete(document.querySelector('#search'));
+    autocomplete.addListener('place_changed', function() {
+        $scope.blurWhere();
+        $scope.loading = $ionicLoading.show({
+            content: 'Getting location...',
+            showBackdrop: false
+        });
+        var place = autocomplete.getPlace();
+        $scope.form.place = place.formatted_address;
+        $scope.search.lat = place.geometry.location.lat();
+        $scope.search.lng = place.geometry.location.lng();
+        $scope.centerMap();
+        $ionicLoading.hide();
+    });
+
     $scope.$on('$stateChangeSuccess', function(event, toState, toParams, fromState, fromParams) {
         $scope.noGoingBack = (null === $ionicHistory.backView()) ? true : false;
     });
@@ -124,19 +139,6 @@ angular.module('controllers')
             }
         );
     };
-
-    $scope.$on('g-places-autocomplete:select', function(event, place) {
-        $scope.blurWhere();
-        $scope.loading = $ionicLoading.show({
-            content: 'Getting location...',
-            showBackdrop: false
-        });
-        $scope.form.place = place.formatted_address;
-        $scope.search.lat = place.geometry.location.lat();
-        $scope.search.lng = place.geometry.location.lng();
-        $scope.centerMap();
-        $ionicLoading.hide();
-    });
 
     $scope.updateBounds = function(map) {
         $scope.Gmap = map;

@@ -17,15 +17,16 @@
                 <div class="item item-input item-floating-label">
                     <span class="input-label">Where is it?</span>
                     <div class="flex">
-                        <input  type="search"
+                        <input
                             class="flex-item"
-                            g-places-autocomplete
+                            id="search"
                             name="place"
                             ng-blur="blurWhere($event)"
                             ng-focus="focusWhere($event)"
                             ng-model="form.place"
                             placeholder="Where is it?"
-                        >
+                            type="search"
+                        />
                         <button class="flex-item button button-small button-icon icon ion-pinpoint"
                             ng-click="centerOnMe()"
                             ng-show="mapReady">
