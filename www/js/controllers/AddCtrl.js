@@ -94,6 +94,7 @@ angular.module('controllers')
             $ionicLoading.hide();
         }, function(error) {
             alert('Unable to get location: ' + error.message);
+            $ionicLoading.hide();
         });
     };
 

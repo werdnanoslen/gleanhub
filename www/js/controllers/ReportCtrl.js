@@ -35,6 +35,9 @@ angular.module('controllers')
         function (payload) {
             var report = payload.data.report[0];
             $scope.form = report;
+            $scope.form.smell = Boolean(report.smell);
+            $scope.form.cleanFood = Boolean(report.cleanFood);
+            console.log($scope.form);
             $scope.map.center.latitude = report.lat;
             $scope.map.center.longitude = report.lng;
             $scope.map.search = {

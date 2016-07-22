@@ -11,66 +11,81 @@
             </button>
         </ion-nav-buttons>
     </ion-nav-bar>
-    <ion-content scroll="false" id="mainContainer">
+    <ion-content scroll="true" id="mainContainer">
         <div id="formContainer" ng-style="{'margin-top': keyboardSpace}">
             <form class="list" id="addForm" name="addForm">
-                <label class="item item-input item-floating-label">
-                    <span class="input-label">Describe your food op</span>
-                    <textarea   name="notes"
-                                ng-model="form.notes"
-                                placeholder="Describe your food op"
-                                rows="1">
-                    </textarea>
-                </label>
-                <label class="item item-input item-floating-label">
-                    <span class="input-label">When is it available?</span>
-                    <input  type="text"
-                            name="availability"
-                            ng-model="form.availability"
-                            placeholder="When is it available?"
-                    >
-                </label>
                 <div class="item item-input item-floating-label">
                     <span class="input-label">Where is it?</span>
                     <div class="flex">
                         <input  type="search"
-                                class="flex-item"
-                                g-places-autocomplete
-                                name="place"
-                                ng-blur="blurWhere($event)"
-                                ng-focus="focusWhere($event)"
-                                ng-model="form.place"
-                                placeholder="Where is it?"
+                            class="flex-item"
+                            g-places-autocomplete
+                            name="place"
+                            ng-blur="blurWhere($event)"
+                            ng-focus="focusWhere($event)"
+                            ng-model="form.place"
+                            placeholder="Where is it?"
                         >
                         <button class="flex-item button button-small button-icon icon ion-pinpoint"
-                                ng-click="centerOnMe()"
-                                ng-show="mapReady">
+                            ng-click="centerOnMe()"
+                            ng-show="mapReady">
                         </button>
                     </div>
                 </div>
+                <div id="mapContainer">
+                    <div id="centerMarker" ng-show="isDragging"></div>
+                    <ui-gmap-google-map
+                         center="map.center"
+                         control="map.control"
+                         events="map.events"
+                         options="map.options"
+                         zoom="map.zoom">
+                        <ui-gmap-marker
+                            coords="map.position.coords"
+                            idkey="'map.position.id'"
+                            icon="map.position.icon"
+                            options="map.position.options">
+                        </ui-gmap-marker>
+                        <ui-gmap-marker
+                            coords="map.search.coords"
+                            idkey="'map.search.id'"
+                            options="map.markers.options">
+                        </ui-gmap-marker>
+                    </ui-gmap-google-map>
+                </div>
+                <label class="item item-input item-floating-label">
+                    <span class="input-label">What food was here?</span>
+                    <textarea   name="contents"
+                                ng-model="form.contents"
+                                placeholder="What food was here?"
+                                rows="1">
+                    </textarea>
+                </label>
+                <label class="item item-input item-floating-label">
+                    <span class="input-label">When is a safe time to dive here?</span>
+                    <input  type="text"
+                            name="availability"
+                            ng-model="form.availability"
+                            placeholder="When is a safe time to dive here?"
+                    >
+                </label>
+                <ion-toggle ng-model="form.smell" name="smell"
+                            toggle-class="toggle-calm">
+                    Did it smell very bad?
+                </ion-toggle>
+                <ion-toggle ng-model="form.cleanFood" name="cleanFood"
+                            toggle-class="toggle-calm">
+                    Was food clean or wrapped?
+                </ion-toggle>
+                <label class="item item-input item-floating-label">
+                    <span class="input-label">Comments</span>
+                    <textarea   name="notes"
+                                ng-model="form.notes"
+                                placeholder="Comments about safety, condition, convenience, or anything else"
+                                rows="2">
+                    </textarea>
+                </label>
             </form>
-        </div>
-
-        <div id="mapContainer">
-            <div id="centerMarker" ng-show="isDragging"></div>
-            <ui-gmap-google-map
-                 center="map.center"
-                 control="map.control"
-                 events="map.events"
-                 options="map.options"
-                 zoom="map.zoom">
-                <ui-gmap-marker
-                    coords="map.position.coords"
-                    idkey="'map.position.id'"
-                    icon="map.position.icon"
-                    options="map.position.options">
-                </ui-gmap-marker>
-                <ui-gmap-marker
-                    coords="map.search.coords"
-                    idkey="'map.search.id'"
-                    options="map.markers.options">
-                </ui-gmap-marker>
-            </ui-gmap-google-map>
         </div>
     </ion-content>
 </ion-view>

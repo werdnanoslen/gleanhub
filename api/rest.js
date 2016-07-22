@@ -120,11 +120,14 @@ REST_ROUTER.prototype.handleRoutes = function(router, connection) {
 
     // Add report
     router.post("/reports", function(req, res) {
-        var query = "INSERT INTO ??(??,??,??,??,??) VALUES (?,?,?,?,?)";
+        var query = "INSERT INTO ??(??,??,??,??,??,??,??,??) VALUES (?,?,?,?,?,?,?,?)";
         var report = req.body.reportJson;
         console.log(report);
-        var table = ["reports", "availability", "notes", "place", "lat", "lng",
-            report.availability, report.notes, report.place, report.lat, report.lng
+        var table = [
+            "reports", "availability", "notes", "place", "lat", "lng",
+            "smell", "contents", "cleanFood",
+            report.availability, report.notes, report.place, report.lat, report.lng,
+            report.smell, report.contents, report.cleanFood
         ];
         query = mysql.format(query, table);
         connection.query(query, function(err, rows) {
