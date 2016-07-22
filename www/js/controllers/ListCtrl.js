@@ -7,11 +7,13 @@ angular.module('controllers')
         'markers': []
     };
 
-    $scope.$on('g-places-autocomplete:select', function(event, place) {
+    var autocomplete = new google.maps.places.Autocomplete(document.querySelector('#search'));
+    autocomplete.addListener('place_changed', function() {
         $scope.loading = $ionicLoading.show({
             content: 'Getting location...',
             showBackdrop: false
         });
+        var place = autocomplete.getPlace();
         $scope.search.place = place.name + ", " + place.formatted_address;
         $scope.search.lat = place.geometry.location.lat();
         $scope.search.lng = place.geometry.location.lng();
