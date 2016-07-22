@@ -3,7 +3,6 @@
 angular.module('gleanhub', [
     'ionic',
     'uiGmapgoogle-maps',
-    'google.places',
     'controllers',
     'services',
     'directives'

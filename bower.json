@@ -4,7 +4,6 @@
   "dependencies": {
     "bower": "*",
     "ionic": "^1.2.4",
-    "angular-google-places-autocomplete": "~0.2.7",
     "angular-google-maps": "^2.3.3",
     "lodash": "3.10.1"
   }
