@@ -205,12 +205,13 @@ REST_ROUTER.prototype.handleRoutes = function(router, connection) {
                     tempData.push(hours[i].tempi);
                 }
                 var date = fbResponse.history.date;
-                var urlDate = date.year + date.mon + date.mday;
+                var urlDate = date.year + date.mon + (Number(date.mday)-1);
                 var latestHour = hours.length-1;
                 var url = "http://api.wunderground.com/api/" + wuApi
-                    + "/history/" + urlDate + "/q/" + lat + "," + lng + ".json";
+                    + "/history_" + urlDate + "/q/" + lat + "," + lng + ".json";
 
                 http.get(url, function(res1){
+                    console.log(url);
                     var body = '';
                     res1.on('data', function(chunk){
                         body += chunk;
@@ -222,9 +223,9 @@ REST_ROUTER.prototype.handleRoutes = function(router, connection) {
                             tempData.unshift(hours[i].tempi);
                         }
                         var date = fbResponse.history.date;
-                        var urlDate = date.year + date.mon + date.mday;
+                        var urlDate = date.year + date.mon + (Number(date.mday)-1);
                         var url = "http://api.wunderground.com/api/" + wuApi
-                            + "/history/" + urlDate + "/q/" + lat + "," + lng + ".json";
+                            + "/history_" + urlDate + "/q/" + lat + "," + lng + ".json";
 
                         http.get(url, function(res2){
                             var body = '';
@@ -234,7 +235,7 @@ REST_ROUTER.prototype.handleRoutes = function(router, connection) {
                             res2.on('end', function(){
                                 var fbResponse = JSON.parse(body);
                                 var hours = fbResponse.history.observations;
-                                for (var i=hours.length-1; i>=latestHour; --i) {
+                                for (var i=hours.length-1; i>latestHour; --i) {
                                     tempData.unshift(hours[i].tempi);
                                 }
                                 res.json({
