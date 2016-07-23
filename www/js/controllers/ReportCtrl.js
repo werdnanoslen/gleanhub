@@ -7,14 +7,36 @@ angular.module('controllers')
     $scope.tempSeries = ['Temp'];
     $scope.tempLabels = [];
     $scope.tempData = [[]];
-    $scope.datasetOverride = [];
+    $scope.datasetOverride = [{
+        "borderWidth": 3,
+        "pointRadius": 0,
+        "label": "Temperature, last 48 hrs"
+    }];
     $scope.tempOptions = {
         scales: {
+            xAxes: [{
+                ticks: {
+                    callback: function(value, index, values) {
+                        if (0 == value%8) {
+                            return value;
+                        } else if (0 == value%4) {
+                            return "";
+                        } else {
+                            return null;
+                        }
+                    }
+                }
+            }],
             yAxes: [{
+                ticks: {
+                    callback: function(value, index, values) {
+                        return value + "°";
+                    }
+                },
                 id: 'Temp',
-                type: 'linear',
-                display: true,
-                position: 'left'
+                label: 'Temperature',
+                position: 'left',
+                type: 'linear'
             }]
         }
     };
