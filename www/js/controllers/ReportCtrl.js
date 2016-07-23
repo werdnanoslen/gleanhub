@@ -3,6 +3,21 @@ angular.module('controllers')
 .controller('ReportCtrl', function($rootScope, $scope, $ionicLoading, $log, $ionicPopup,
             $state, $ionicHistory, $ionicPopover, $location, uiGmapGoogleMapApi, API) {
     $scope.noGoingBack = (null === $ionicHistory.backView()) ? true : false;
+    $scope.gotTemps = false;
+    $scope.tempSeries = ['Temp'];
+    $scope.tempLabels = [];
+    $scope.tempData = [[]];
+    $scope.datasetOverride = [];
+    $scope.tempOptions = {
+        scales: {
+            yAxes: [{
+                id: 'Temp',
+                type: 'linear',
+                display: true,
+                position: 'left'
+            }]
+        }
+    };
     $scope.map = {
         center: {
             latitude: 0,
@@ -37,7 +52,6 @@ angular.module('controllers')
             $scope.form = report;
             $scope.form.smell = Boolean(report.smell);
             $scope.form.cleanFood = Boolean(report.cleanFood);
-            console.log($scope.form);
             $scope.map.center.latitude = report.lat;
             $scope.map.center.longitude = report.lng;
             $scope.map.search = {
@@ -47,6 +61,22 @@ angular.module('controllers')
                     longitude: report.lng
                 }
             };
+
+            var promise = API.getTemp48(report.lat, report.lng);
+            promise.then(
+                function (payload) {
+                    var tempData = payload.data.tempData;
+                    $scope.tempData = [tempData];
+                    $scope.tempLabels = [];
+                    for (var i=0; i<tempData.length; ++i) {
+                        $scope.tempLabels.unshift(i+"");
+                    }
+                    $scope.gotTemps = true;
+                },
+                function (errorPayload) {
+                    $log.error('failure fetching temp data', errorPayload);
+                }
+            );
         },
         function (errorPayload) {
             $log.error('failure fetching report', errorPayload);

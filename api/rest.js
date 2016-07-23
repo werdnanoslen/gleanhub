@@ -1,6 +1,8 @@
+var http = require('http');
 var mysql = require("mysql");
 var secrets = require("./secrets.js");
 var api = secrets.APIPATH;
+var wuApi = secrets.WU_API;
 var columns = ["datetime_occurred", "number", "text", "place", "lat", "lng"];
 
 function REST_ROUTER(router, connection) {
@@ -181,6 +183,86 @@ REST_ROUTER.prototype.handleRoutes = function(router, connection) {
                     "report": rows
                 });
             }
+        });
+    });
+
+    // Get temperature history -48 hours
+    router.post("/temp48", function(req, res) {
+        var lat = req.body.lat;
+        var lng = req.body.lng;
+        var url = "http://api.wunderground.com/api/" + wuApi + "/history/q/"
+            + lat + "," + lng + ".json";
+        http.get(url, function(res0){
+            var body = '';
+            res0.on('data', function(chunk){
+                body += chunk;
+            });
+            res0.on('end', function(){
+                var fbResponse = JSON.parse(body);
+                var hours = fbResponse.history.observations;
+                var tempData = [];
+                for (var i=0; i<hours.length; ++i) {
+                    tempData.push(hours[i].tempi);
+                }
+                var date = fbResponse.history.date;
+                var urlDate = date.year + date.mon + date.mday;
+                var latestHour = hours.length-1;
+                var url = "http://api.wunderground.com/api/" + wuApi
+                    + "/history/" + urlDate + "/q/" + lat + "," + lng + ".json";
+
+                http.get(url, function(res1){
+                    var body = '';
+                    res1.on('data', function(chunk){
+                        body += chunk;
+                    });
+                    res1.on('end', function(){
+                        var fbResponse = JSON.parse(body);
+                        var hours = fbResponse.history.observations;
+                        for (var i=hours.length-1; i>=0; --i) {
+                            tempData.unshift(hours[i].tempi);
+                        }
+                        var date = fbResponse.history.date;
+                        var urlDate = date.year + date.mon + date.mday;
+                        var url = "http://api.wunderground.com/api/" + wuApi
+                            + "/history/" + urlDate + "/q/" + lat + "," + lng + ".json";
+
+                        http.get(url, function(res2){
+                            var body = '';
+                            res2.on('data', function(chunk){
+                                body += chunk;
+                            });
+                            res2.on('end', function(){
+                                var fbResponse = JSON.parse(body);
+                                var hours = fbResponse.history.observations;
+                                for (var i=hours.length-1; i>=latestHour; --i) {
+                                    tempData.unshift(hours[i].tempi);
+                                }
+                                res.json({
+                                    "tempData": tempData
+                                });
+                            });
+                        }).on('error', function(err){
+                            res.json({
+                                "tempData": tempData
+                            });
+                            res2.status(500).json({
+                                "error": err
+                            });
+                        });
+                    });
+                }).on('error', function(err){
+                    res.json({
+                        "tempData": tempData
+                    });
+                    res1.status(500).json({
+                        "error": err
+                    });
+                });
+            });
+        }).on('error', function(err){
+            res.status(500).json({
+                "error": err
+            });
         });
     });
 }

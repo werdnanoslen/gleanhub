@@ -27,6 +27,14 @@ angular.module('services', [])
                 data: {'myLat': myLat, 'myLng': myLng, 'kmAway': kmAway}
             });
         },
+        getTemp48: function(lat, lng) {
+            return $http({
+                url: api + 'temp48',
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                data: {'lat': lat, 'lng': lng}
+            });
+        },
         addReport: function (reportJson) {
             return $http({
                 url: api + 'reports',

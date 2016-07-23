@@ -82,6 +82,11 @@
             </ui-gmap-google-map>
         </div>
 
+        <canvas ng-show="gotTemps" id="line" class="chart chart-line" chart-data="tempData"
+                chart-labels="tempLabels" chart-series="tempSeries" chart-options="tempOptions"
+                chart-dataset-override="datasetOverride">
+        </canvas>
+
         <div id="still-active-button">
             <button class="button button-full button-small button-dark" ng-click="showActiveQuestion()">
                 Report this as inactive
