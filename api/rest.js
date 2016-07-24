@@ -239,12 +239,18 @@ REST_ROUTER.prototype.handleRoutes = function(router, connection) {
                                     tempData.unshift(hours[i].tempi);
                                 }
                                 res.json({
-                                    "tempData": tempData
+                                    "tempData": {
+                                        time: latestHour,
+                                        temps: tempData
+                                    }
                                 });
                             });
                         }).on('error', function(err){
                             res.json({
-                                "tempData": tempData
+                                "tempData": {
+                                    time: latestHour,
+                                    temps: tempData
+                                }
                             });
                             res2.status(500).json({
                                 "error": err
@@ -253,7 +259,10 @@ REST_ROUTER.prototype.handleRoutes = function(router, connection) {
                     });
                 }).on('error', function(err){
                     res.json({
-                        "tempData": tempData
+                        "tempData": {
+                            time: latestHour,
+                            temps: tempData
+                        }
                     });
                     res1.status(500).json({
                         "error": err

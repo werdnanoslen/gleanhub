@@ -7,6 +7,7 @@ angular.module('controllers')
     $scope.tempSeries = ['Temp'];
     $scope.tempLabels = [];
     $scope.tempData = [[]];
+    $scope.latestHour = new Date().getHours();
     $scope.datasetOverride = [{
         "borderWidth": 3,
         "pointRadius": 0,
@@ -17,9 +18,11 @@ angular.module('controllers')
             xAxes: [{
                 ticks: {
                     callback: function(value, index, values) {
-                        if (0 == value%8) {
+                        if (values.length-1 == index) {
+                            return "Now";
+                        } else if (0 == index%8) {
                             return value;
-                        } else if (0 == value%4) {
+                        } else if (0 == index%4) {
                             return "";
                         } else {
                             return null;
@@ -88,11 +91,23 @@ angular.module('controllers')
             promise.then(
                 function (payload) {
                     var tempData = payload.data.tempData;
-                    $scope.tempData = [tempData];
+                    $scope.tempData = [tempData.temps];
                     $scope.tempLabels = [];
-                    for (var i=0; i<tempData.length; ++i) {
-                        $scope.tempLabels.unshift(i+"");
+                    var date = new Date().setHours(tempData.time);
+                    for (var i=0; i<tempData.temps.length; ++i) {
+                        var hour = new Date(date - i*3600*1000).getHours();
+                        if (hour > 12) {
+                            hour = (hour - 12) + "pm";
+                        } else if (hour == 0) {
+                            hour = 12 + "am";
+                        } else if (hour == 12) {
+                            hour = 12 + "pm";
+                        } else if (hour < 12) {
+                            hour += "am";
+                        }
+                        $scope.tempLabels.unshift(hour);
                     }
+                    console.log($scope.tempLabels);
                     $scope.gotTemps = true;
                 },
                 function (errorPayload) {
