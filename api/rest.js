@@ -124,7 +124,6 @@ REST_ROUTER.prototype.handleRoutes = function(router, connection) {
     router.post("/reports", function(req, res) {
         var query = "INSERT INTO ??(??,??,??,??,??,??,??,??) VALUES (?,?,?,?,?,?,?,?)";
         var report = req.body.reportJson;
-        console.log(report);
         var table = [
             "reports", "availability", "notes", "place", "lat", "lng",
             "smell", "contents", "cleanFood",
@@ -149,7 +148,6 @@ REST_ROUTER.prototype.handleRoutes = function(router, connection) {
     router.put("/reports/:id", function(req, res) {
         var query = "UPDATE ?? SET ?? = ? WHERE ?? = ?";
         var report = req.body.reportJson;
-        console.log(report);
         var table = ["reports",
             "active", report.active,
             "id", req.params.id
@@ -211,7 +209,6 @@ REST_ROUTER.prototype.handleRoutes = function(router, connection) {
                     + "/history_" + urlDate + "/q/" + lat + "," + lng + ".json";
 
                 http.get(url, function(res1){
-                    console.log(url);
                     var body = '';
                     res1.on('data', function(chunk){
                         body += chunk;

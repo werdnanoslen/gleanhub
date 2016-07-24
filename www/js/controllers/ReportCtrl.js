@@ -107,7 +107,6 @@ angular.module('controllers')
                         }
                         $scope.tempLabels.unshift(hour);
                     }
-                    console.log($scope.tempLabels);
                     $scope.gotTemps = true;
                 },
                 function (errorPayload) {
