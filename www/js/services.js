@@ -5,6 +5,9 @@ angular.module('services', [])
     var api = '//45.55.80.26:8001/demos/gleanhub/api/';
 
     return {
+        ipGeolocate: function() {
+            return $http.get('http://ipinfo.io');
+        },
         getReports: function () {
             return $http.get(api + 'reports');
         },

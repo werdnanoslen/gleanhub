@@ -108,28 +108,45 @@ angular.module('controllers')
             showBackdrop: false
         });
         navigator.geolocation.getCurrentPosition(function(pos) {
-            $scope.search.lat = pos.coords.latitude;
-            $scope.search.lng = pos.coords.longitude;
-            $scope.map.position = {
-                id: 'position',
-                icon: {
-                    path: google.maps.SymbolPath.CIRCLE,
-                    fillOpacity: 1.0,
-                    fillColor: '#4D90FE',
-                    strokeColor: '#ffffff',
-                    strokeWeight: 2.0,
-                    scale: 7
-                },
-                coords: {
-                    latitude: $scope.search.lat,
-                    longitude: $scope.search.lng
-                }
-            };
-            $scope.centerMap();
+            $scope.setCenter(pos.coords.latitude, pos.coords.longitude);
             $ionicLoading.hide();
         }, function(error) {
-            alert('Unable to get location: ' + error.message);
+            var promise = API.ipGeolocate();
+            promise.then(
+                function (payload) {
+                    var latlng = payload.data.loc.split(',');
+                    $scope.setCenter(latlng[0], latlng[1]);
+                    $ionicLoading.hide();
+                },
+                function (errorPayload) {
+                    $log.error('Unable to get location', errorPayload);
+                    $ionicLoading.hide();
+                }
+            );
+            $log.error('Unable to get location', error.message);
         });
+    };
+
+    $scope.setCenter = function(lat, lng) {
+        console.log('got location', {lat, lng});
+        $scope.search.lat = lat;
+        $scope.search.lng = lng;
+        $scope.map.position = {
+            id: 'position',
+            icon: {
+                path: google.maps.SymbolPath.CIRCLE,
+                fillOpacity: 1.0,
+                fillColor: '#4D90FE',
+                strokeColor: '#ffffff',
+                strokeWeight: 2.0,
+                scale: 7
+            },
+            coords: {
+                latitude: $scope.search.lat,
+                longitude: $scope.search.lng
+            }
+        };
+        $scope.centerMap();
     };
 
     $scope.centerMap = function() {

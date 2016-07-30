@@ -27,16 +27,33 @@ angular.module('controllers')
             content: 'Getting current location...',
             showBackdrop: false
         });
+
         navigator.geolocation.getCurrentPosition(function(pos) {
-            console.log('Got pos', pos);
-            $scope.search.place = 'My location';
-            $scope.search.lat = pos.coords.latitude;
-            $scope.search.lng = pos.coords.longitude;
-            $scope.updateReportsInBounds();
+            $scope.setCenter(pos.coords.latitude, pos.coords.longitude);
             $ionicLoading.hide();
         }, function(error) {
-            alert('Unable to get location: ' + error.message);
+            var promise = API.ipGeolocate();
+            promise.then(
+                function (payload) {
+                    var latlng = payload.data.loc.split(',');
+                    $scope.setCenter(latlng[0], latlng[1]);
+                    $ionicLoading.hide();
+                },
+                function (errorPayload) {
+                    $log.error('Unable to get location', errorPayload);
+                    $ionicLoading.hide();
+                }
+            );
+            $log.error('Unable to get location', error.message);
         });
+    };
+
+    $scope.setCenter = function(lat, lng) {
+        console.log('got location', {lat, lng});
+        $scope.search.place = 'My location';
+        $scope.search.lat = lat;
+        $scope.search.lng = lng;
+        $scope.updateReportsInBounds();
     };
 
     $scope.updateReportsInBounds = function(kmAway=5) {
