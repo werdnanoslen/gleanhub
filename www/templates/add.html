@@ -70,20 +70,28 @@
                             placeholder="When is a safe time to dive here?"
                     >
                 </label>
-                <ion-toggle ng-model="form.smell" name="smell"
-                            toggle-class="toggle-calm">
-                    Did it smell very bad?
-                </ion-toggle>
-                <ion-toggle ng-model="form.cleanFood" name="cleanFood"
-                            toggle-class="toggle-calm">
+                <div class="item">
+                    <span class="input-label has-input" for="smell">
+                        Did it smell very bad?
+                    </span>
+                    <div class="button-bar" id="smell">
+                        <a grouped-radio="'yes'" ng-model="form.smell">Yes</a>
+                        <a grouped-radio="'no'" ng-model="form.smell">No</a>
+                    </div>
+                </div>
+                <div class="item item-stacked-label" for="smell">
                     Was food clean or wrapped?
-                </ion-toggle>
+                    <div class="button-bar" id="smell">
+                        <a grouped-radio="'yes'" ng-model="form.cleanFood">Yes</a>
+                        <a grouped-radio="'no'" ng-model="form.cleanFood">No</a>
+                    </div>
+                </div>
                 <label class="item item-input item-floating-label">
                     <span class="input-label">Comments</span>
                     <textarea   name="notes"
                                 ng-model="form.notes"
                                 placeholder="Comments about safety, condition, convenience, or anything else"
-                                rows="2">
+                                rows="3">
                     </textarea>
                 </label>
             </form>
