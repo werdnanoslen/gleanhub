@@ -86,6 +86,9 @@ angular.module('controllers')
                     longitude: report.lng
                 }
             };
+            if (report.photo !== null && report.photo.length > 0) {
+                $scope.photoPreview = true;
+            }
 
             var promise = API.getTemp48(report.lat, report.lng);
             promise.then(

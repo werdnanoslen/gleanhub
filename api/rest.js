@@ -1,9 +1,15 @@
 var http = require('http');
 var mysql = require("mysql");
+var cloudinary = require('cloudinary');
 var secrets = require("./secrets.js");
 var api = secrets.APIPATH;
 var wuApi = secrets.WU_API;
 var columns = ["datetime_occurred", "number", "text", "place", "lat", "lng"];
+cloudinary.config({
+  cloud_name: secrets.CLOUD_NAME,
+  api_key: secrets.CLOUD_KEY,
+  api_secret: secrets.CLOUD_SECRET
+});
 
 function REST_ROUTER(router, connection) {
     var self = this;
@@ -122,26 +128,52 @@ REST_ROUTER.prototype.handleRoutes = function(router, connection) {
 
     // Add report
     router.post("/reports", function(req, res) {
-        var query = "INSERT INTO ??(??,??,??,??,??,??,??,??) VALUES (?,?,?,?,?,?,?,?)";
         var report = req.body.reportJson;
-        var table = [
-            "reports", "availability", "notes", "place", "lat", "lng",
-            "smell", "contents", "cleanFood",
-            report.availability, report.notes, report.place, report.lat, report.lng,
-            report.smell, report.contents, report.cleanFood
-        ];
-        query = mysql.format(query, table);
-        connection.query(query, function(err, rows) {
-            if (err) {
-                res.status(500).json({
-                    "error": err
-                });
+
+        if (report.photo === undefined) {
+            postReport();
+        } else if (report.photo.length > 10) {
+            cloudinary.uploader.upload(report.photo, function(result) {
+                postReport(result.url);
+            });
+        } else {
+            console.error('this doesn\'t look like a base64 image', report.photo);
+            postReport();
+        }
+
+        function postReport(link) {
+            var table = [];
+            var query = "";
+            if (link) {
+                table = [
+                    "reports", "availability", "notes", "place", "lat", "lng",
+                    "smell", "contents", "cleanFood","photo",
+                    report.availability, report.notes, report.place, report.lat, report.lng,
+                    report.smell, report.contents, report.cleanFood, link
+                ];
+                query = "INSERT INTO ??(??,??,??,??,??,??,??,??,??) VALUES (?,?,?,?,?,?,?,?,?)";
             } else {
-                res.json({
-                    "report": rows
-                });
+                table = [
+                    "reports", "availability", "notes", "place", "lat", "lng",
+                    "smell", "contents", "cleanFood",
+                    report.availability, report.notes, report.place, report.lat, report.lng,
+                    report.smell, report.contents, report.cleanFood
+                ];
+                query = "INSERT INTO ??(??,??,??,??,??,??,??,??) VALUES (?,?,?,?,?,?,?,?)";
             }
-        });
+            query = mysql.format(query, table);
+            connection.query(query, function(err, rows) {
+                if (err) {
+                    res.status(500).json({
+                        "error": err
+                    });
+                } else {
+                    res.json({
+                        "report": rows
+                    });
+                }
+            });
+        }
     });
 
     // Update report

@@ -13,6 +13,8 @@
     <ion-content scroll="true" id="mainContainer">
         <div id="formContainer">
             <form class="list" id="addForm" name="addForm">
+                <img ng-src="{{form.photo}}" ng-show="photoPreview" id="photoPreview"></canvas>
+
                 <label class="item item-input item-floating-label">
                     <span class="input-label">What food was here?</span>
                     <textarea   name="contents"

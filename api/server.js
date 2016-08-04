@@ -46,8 +46,8 @@ REST.prototype.connectMysql = function() {
 
 REST.prototype.configureExpress = function(connection) {
     var self = this;
-    app.use(bodyParser.urlencoded({ extended: true }));
-    app.use(bodyParser.json());
+    app.use(bodyParser.urlencoded({limit: '10mb', extended: true }));
+    app.use(bodyParser.json({limit: '10mb'}));
     var router = express.Router();
     app.use(allowCrossDomain);
     app.use(secrets.APIPATH, router);

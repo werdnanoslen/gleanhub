@@ -31,6 +31,7 @@ CREATE TABLE IF NOT EXISTS `reports` (
   `datetime_reported` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `contents` text COMMENT 'What food was here',
   `availability` text COMMENT 'Time range of the pickup area',
+  `photo` text COMMENT 'URL to photo for this report',
   `smell` tinyint(1) DEFAULT NULL COMMENT 'Whether the site smelled very bad',
   `cleanFood` tinyint(1) DEFAULT NULL COMMENT 'Whether the food was clean or in bags',
   `notes` varchar(255) DEFAULT NULL COMMENT 'Notes or instructions the owner may leave to the gleaner',

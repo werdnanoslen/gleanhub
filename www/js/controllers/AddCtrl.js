@@ -9,6 +9,7 @@ angular.module('controllers')
     $scope.isDragging = false;
     $scope.form = {};
     $scope.keyboardSpace = "";
+    $scope.photoPreview = false;
     $scope.mapReady = false;
     if (undefined !== $scope.search) {
         $scope.form.place = $scope.search.place;
@@ -138,16 +139,43 @@ angular.module('controllers')
         $scope.keyboardSpace = 50-1*rect.top+"px";
     };
 
+
+    $scope.previewPhoto = function() {
+        var file = document.querySelector('#photo').files[0];
+        var canvas = document.getElementById('photoPreview');
+        var ctx = canvas.getContext('2d');
+        var reader = new FileReader();
+        reader.onload = function(event) {
+            var img = new Image();
+            img.src = event.target.result;
+            img.onload = function() {
+                canvas.width = img.width;
+                canvas.height = img.height;
+                ctx.drawImage(img, 0, 0);
+            }
+            $scope.form.photo = img.src;
+            $scope.$apply(function () {
+                $scope.photoPreview = true;
+            });
+        }
+        reader.readAsDataURL(file);
+    }
+
+    $scope.removePhoto = function() {
+        $scope.form.photo = undefined;
+        $scope.photoPreview = false;
+    }
+
     $scope.submitForm = function() {
         //TODO validation
         var reportJson = $scope.form;
         reportJson.active = true;
         reportJson.lat = $scope.search.lat;
         reportJson.lng = $scope.search.lng;
-
         var promise = API.addReport(reportJson);
         promise.then(
             function (payload) {
+                $scope.removePhoto();
                 $state.go('report', {reportId: payload.data.report.insertId});
             },
             function (errorPayload) {
