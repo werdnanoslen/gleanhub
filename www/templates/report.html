@@ -13,9 +13,11 @@
     <ion-content scroll="true" id="mainContainer">
         <div id="formContainer">
             <form class="list" id="addForm" name="addForm">
-                <img ng-src="{{form.photo}}" ng-show="photoPreview" id="photoPreview"></canvas>
+                <img ng-src="{{form.photo}}" ng-hide="form.photo === null"
+                        id="photoPreview"></canvas>
 
-                <label class="item item-input item-floating-label">
+                <label class="item item-input item-floating-label"
+                         ng-hide="form.contents === null">
                     <span class="input-label">What food was here?</span>
                     <textarea   name="contents"
                                 ng-model="form.contents"
@@ -24,7 +26,8 @@
                                 disabled>
                     </textarea>
                 </label>
-                <label class="item item-input item-floating-label">
+                <label class="item item-input item-floating-label"
+                         ng-hide="form.availability === null">
                     <span class="input-label">When is a safe time to dive here?</span>
                     <input  type="text"
                             name="availability"
@@ -33,15 +36,19 @@
                             disabled
                     >
                 </label>
-                <ion-toggle ng-model="form.smell" toggle-class="toggle-calm"
-                            ng-disabled="true">
-                    Did it smell very bad?
-                </ion-toggle>
-                <ion-toggle ng-model="form.cleanFood" toggle-class="toggle-calm"
-                            ng-disabled="true">
+                <label class="item" ng-hide="form.smell === null">
+                    Was the smell tolerable?
+                    <span class="badge badge-{{form.smell ? 'stable' : 'assertive'}}">
+                        {{form.smell ? 'YES' : 'NO'}}
+                    </span>
+                </label>
+                <label class="item" ng-hide="form.cleanFood === null">
                     Was food clean or wrapped?
-                </ion-toggle>
-                <label class="item item-input item-floating-label">
+                    <span class="badge badge-{{form.cleanFood ? 'stable' : 'assertive'}}">
+                        {{form.cleanFood ? 'YES' : 'NO'}}
+                    </span>
+                </label>
+                <label class="item item-input item-floating-label" ng-hide="form.notes === null">
                     <span class="input-label">Comments</span>
                     <textarea   name="notes"
                                 ng-model="form.notes"
@@ -50,7 +57,7 @@
                                 disabled>
                     </textarea>
                 </label>
-                <div class="item item-input item-floating-label">
+                <div class="item item-input item-floating-label" ng-hide="form.place === null">
                     <span class="input-label">Where is it?</span>
                     <div class="flex">
                         <input  type="search"
@@ -65,7 +72,7 @@
             </form>
         </div>
 
-        <div id="mapContainer">
+        <div id="mapContainer" ng-hide="form.lat === null">
             <ui-gmap-google-map
                  center="map.center"
                  options="map.options"
@@ -84,9 +91,9 @@
             </ui-gmap-google-map>
         </div>
 
-        <label for="line" class="item item-input item-stacked-label">
+        <label for="line" class="item item-input item-stacked-label" ng-show="gotTemps" >
             Temperature, last 48 hrs
-            <canvas ng-show="gotTemps" id="line" class="chart chart-line" chart-data="tempData"
+            <canvas id="line" class="chart chart-line" chart-data="tempData"
                     chart-labels="tempLabels" chart-series="tempSeries" chart-options="tempOptions"
                     chart-dataset-override="datasetOverride">
                     <label class="item item-input item-floating-label">

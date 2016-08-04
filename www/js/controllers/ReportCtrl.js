@@ -75,8 +75,6 @@ angular.module('controllers')
         function (payload) {
             var report = payload.data.report[0];
             $scope.form = report;
-            $scope.form.smell = Boolean(report.smell);
-            $scope.form.cleanFood = Boolean(report.cleanFood);
             $scope.map.center.latitude = report.lat;
             $scope.map.center.longitude = report.lng;
             $scope.map.search = {
@@ -86,9 +84,10 @@ angular.module('controllers')
                     longitude: report.lng
                 }
             };
-            if (report.photo !== null && report.photo.length > 0) {
-                $scope.photoPreview = true;
+            if ($scope.form.place === null) {
+                $scope.form.place = $scope.form.lat + ", " + $scope.form.lng;
             }
+            console.log($scope.form);
 
             var promise = API.getTemp48(report.lat, report.lng);
             promise.then(
