@@ -64,6 +64,8 @@ angular.module('controllers')
 
     $scope.$on('$stateChangeSuccess', function(event, toState, toParams, fromState, fromParams) {
         $scope.noGoingBack = (null === $ionicHistory.backView()) ? true : false;
+        $scope.form = {};
+        $scope.removePhoto();
     });
 
     uiGmapGoogleMapApi.then(function(uiMap) {
