@@ -59,7 +59,16 @@ angular.module('controllers')
         },
         options: {
             disableDefaultUI: true,
-            clickableIcons: false
+            clickableIcons: false,
+            cluster: {
+                styles: [{
+                    url: "img/m2.png",
+                    width: 53,
+                    height: 50,
+                    textColor: 'white',
+                    textSize: 14
+                }]
+            }
         },
         searchbox: {
             events: {
