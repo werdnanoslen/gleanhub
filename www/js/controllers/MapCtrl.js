@@ -165,6 +165,10 @@ angular.module('controllers')
         } else {
             $scope.map.center.latitude = $scope.search.lat;
             $scope.map.center.longitude = $scope.search.lng;
+            if (undefined !== $scope.Gmap) {
+                var latlng = new google.maps.LatLng($scope.search.lat, $scope.search.lng);
+                $scope.Gmap.setCenter(latlng);
+            }
         }
     };
 
