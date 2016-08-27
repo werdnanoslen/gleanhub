@@ -1,5 +1,7 @@
 <input  type="text"
         ng-blur="submitSearch()"
         ng-keypress="submitSearch($event)"
-        ng-model="ngModel"
-        placeholder="Search">
+        ng-model="search.place"
+        placeholder="Search"
+        ng-change="disableTap()"
+        id="pac-input">

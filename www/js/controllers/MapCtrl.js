@@ -108,7 +108,24 @@ angular.module('controllers')
 
     uiGmapGoogleMapApi.then(function(uiMap) {
         $scope.centerMap();
+        $scope.disableTap();
     });
+
+    $scope.$watch('search.place', function (newValue, oldValue) {
+        $scope.disableTap();
+    });
+
+    $scope.disableTap = function() {
+        console.log('disable tap');
+        var container = document.getElementsByClassName('pac-container');
+        angular.element(container).attr('data-tap-disabled', 'true');
+        var backdrop = document.getElementsByClassName('backdrop');
+        angular.element(backdrop).attr('data-tap-disabled', 'true');
+        // leave input field if google-address-entry is selected
+        angular.element(container).on("click", function() {
+            document.getElementById('pac-input').blur();
+        });
+    }
 
     $scope.centerOnMe = function() {
         console.log('Getting current location');
@@ -204,6 +221,7 @@ angular.module('controllers')
     $scope.clearSearch = function() {
         $scope.explicitSearch = false;
         $scope.search.place = "";
+        document.getElementById('pac-input').value = "";
         $scope.suggestions.markers = [];
     }
 
