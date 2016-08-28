@@ -24,23 +24,34 @@ map {
 #searchBarBox {
     position: relative;
 }
+#searchBar button {
+    width: 0;
+}
 #searchBar > button {
     margin-right: -7px;
     padding: 0;
 }
 #searchBarBox button {
+    background: linear-gradient(
+        to right,
+        rgba(255,255,255,0),
+        rgba(255,255,255,0.95),
+        rgba(255,255,255,1),
+        rgba(255,255,255,1)
+    );
+    border: 0;
     float: right;
+    padding-left: 20px;
+    padding-right: 5px;
     position: absolute;
-    right: 15px;
+    right: -1px;
     top: 3px;
+    width: auto;
 }
 #searchBar input {
     font: inherit;
     margin-right: 4px;
     width: 100%;
-}
-#searchBar button {
-    width: 0;
 }
 #mainContainer {
     /*height: 100%;*/
