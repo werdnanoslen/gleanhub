@@ -39,7 +39,7 @@ map {
     margin-right: 4px;
     width: 100%;
 }
-*[view-title="Map"] #searchBar button {
+#searchBar button {
     width: 0;
 }
 #mainContainer {

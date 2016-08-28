@@ -2,13 +2,14 @@ angular.module('controllers')
 
 .controller('ListCtrl', function($scope, $rootScope, $ionicLoading, $log, API) {
     console.log('ready');
-
+    $scope.explicitSearch = true;
     $scope.reports = {
         'markers': []
     };
 
     var autocomplete = new google.maps.places.Autocomplete(document.querySelector('#search'));
     autocomplete.addListener('place_changed', function() {
+        $scope.explicitSearch = true;
         $scope.loading = $ionicLoading.show({
             content: 'Getting location...',
             showBackdrop: false
@@ -47,6 +48,11 @@ angular.module('controllers')
             $log.error('Unable to get location', error.message);
         });
     };
+
+    $scope.clearSearch = function() {
+        $scope.explicitSearch = false;
+        $scope.search.place = "";
+    }
 
     $scope.setCenter = function(lat, lng) {
         console.log('got location', {lat, lng});
