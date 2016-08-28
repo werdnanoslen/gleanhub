@@ -2,7 +2,7 @@ angular.module('controllers')
 
 .controller('ReportCtrl', function($rootScope, $scope, $ionicLoading, $log, $ionicPopup,
             $state, $ionicHistory, $ionicPopover, $location, uiGmapGoogleMapApi, API) {
-    $scope.noGoingBack = (null === $ionicHistory.backView()) ? true : false;
+    $scope.noGoingBack = true;
     $scope.gotTemps = false;
     $scope.tempSeries = ['Temp'];
     $scope.tempLabels = [];
@@ -122,7 +122,13 @@ angular.module('controllers')
     );
 
     $scope.$on('$stateChangeSuccess', function(event, toState, toParams, fromState, fromParams) {
-        $scope.noGoingBack = (null === $ionicHistory.backView()) ? true : false;
+        if (null === $ionicHistory.backView()) {
+            $scope.noGoingBack = true;
+        } else if ("add" === $ionicHistory.backView().stateId) {
+            $scope.noGoingBack = true;
+        } else {
+            $scope.noGoingBack = false;
+        }
     });
 
     $scope.showActiveQuestion = function() {
