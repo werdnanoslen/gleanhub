@@ -45,19 +45,19 @@
                 options="map.position.options">
             </ui-gmap-marker>
             <ui-gmap-markers
-                events="reports.events"
+                typeEvents="reports.events"
                 models="reports.markers"
                 options="reports.options"
                 coords="'self'"
-                doCluster="true"
+                type="'spider'"
                 clusterOptions="map.options.cluster">
             </ui-gmap-markers>
             <ui-gmap-markers
-                events="suggestions.events"
+                typeEvents="suggestions.events"
                 models="suggestions.markers"
                 options="suggestions.options"
                 coords="'self'"
-                doCluster="true"
+                typeEvents="'spider'"
                 clusterOptions="map.options.cluster">
             </ui-gmap-markers>
         </ui-gmap-google-map>
