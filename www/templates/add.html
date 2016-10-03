@@ -97,15 +97,7 @@
                 </textarea>
             </label>
             <div class="item">
-                <!-- <div class="fileUpload">
-                    <span class="button button-positive button-block" ng-hide="photoPreview">
-                        Upload photo
-                    </span>
-                    <input  type="file" class="upload"
-                            ng-model="form.photo" name="photo" id="photo"
-                            accept="image/*" capture="camera"
-                            onchange="angular.element(this).scope().previewPhoto()">
-                </div> -->
+                <input type="file" class="hidden" id="fileInput">
                 <button class="button button-positive button-block"
                         ng-hide="photoPreview" ng-click="previewPhoto()">
                     Upload photo

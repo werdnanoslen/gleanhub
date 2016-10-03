@@ -1,7 +1,8 @@
 angular.module('controllers')
 
 .controller('AddCtrl', function($scope, $rootScope, $ionicLoading, $log,
-        $state, $timeout, $ionicHistory, uiGmapGoogleMapApi, uiGmapIsReady, API) {
+        $state, $timeout, $ionicHistory, $ionicActionSheet, uiGmapGoogleMapApi,
+        uiGmapIsReady, API) {
     $scope.noGoingBack = (null === $ionicHistory.backView()) ? true : false;
     var geocoder = new google.maps.Geocoder();
     // hacked because gmap's events don't include infowindow clicks
@@ -143,45 +144,71 @@ angular.module('controllers')
 
 
     $scope.previewPhoto = function() {
-        navigator.camera.getPicture(function(imageData) {
-            var canvas = document.getElementById('photoPreview');
-            var ctx = canvas.getContext('2d');
-            var img = new Image();
-            img.src = 'data:image/jpeg;base64,' + imageData;
-            img.onload = function() {
-                canvas.width = img.width;
-                canvas.height = img.height;
-                ctx.drawImage(img, 0, 0);
+        $ionicActionSheet.show({
+            buttons: [{
+                text: 'Camera'
+            }, {
+                text: 'Gallery'
+            }],
+            titleText: 'Upload image from',
+            cancelText: 'Cancel',
+            buttonClicked: function(index, button) {
+                if ("Camera" === button.text) {
+                    useCamera();
+                } else if ("Gallery" === button.text) {
+                    useGallery();
+                }
+                return true;
             }
-            $scope.form.photo = img.src;
-            $scope.$apply(function () {
-                $scope.photoPreview = true;
-            });
-        }, function(err) {
-            console.error('camera error: ', err);
-        }, {
-            destinationType: Camera.DestinationType.DATA_URL,
-            quality: 25
         });
 
-        // var file = document.querySelector('#photo').files[0];
-        // var canvas = document.getElementById('photoPreview');
-        // var ctx = canvas.getContext('2d');
-        // var reader = new FileReader();
-        // reader.onload = function(event) {
-        //     var img = new Image();
-        //     img.src = event.target.result;
-        //     img.onload = function() {
-        //         canvas.width = img.width;
-        //         canvas.height = img.height;
-        //         ctx.drawImage(img, 0, 0);
-        //     }
-        //     $scope.form.photo = img.src;
-        //     $scope.$apply(function () {
-        //         $scope.photoPreview = true;
-        //     });
-        // }
-        // reader.readAsDataURL(file);
+        function useCamera() {
+            navigator.camera.getPicture(function(imageData) {
+                var canvas = document.getElementById('photoPreview');
+                var ctx = canvas.getContext('2d');
+                var img = new Image();
+                img.src = 'data:image/jpeg;base64,' + imageData;
+                img.onload = function() {
+                    canvas.width = img.width;
+                    canvas.height = img.height;
+                    ctx.drawImage(img, 0, 0);
+                }
+                $scope.form.photo = img.src;
+                $scope.$apply(function () {
+                    $scope.photoPreview = true;
+                });
+            }, function(err) {
+                console.error('camera error: ', err);
+            }, {
+                destinationType: Camera.DestinationType.DATA_URL,
+                quality: 25
+            });
+        }
+
+        function useGallery() {
+            var input = document.getElementById('fileInput');
+            input.click();
+            input.onchange = function() {
+                var file = input.files[0];
+                var canvas = document.getElementById('photoPreview');
+                var ctx = canvas.getContext('2d');
+                var reader = new FileReader();
+                reader.onload = function(event) {
+                    var img = new Image();
+                    img.src = event.target.result;
+                    img.onload = function() {
+                        canvas.width = img.width;
+                        canvas.height = img.height;
+                        ctx.drawImage(img, 0, 0);
+                    }
+                    $scope.form.photo = img.src;
+                    $scope.$apply(function () {
+                        $scope.photoPreview = true;
+                    });
+                }
+                reader.readAsDataURL(file);
+            }
+        }
     }
 
     $scope.removePhoto = function() {
