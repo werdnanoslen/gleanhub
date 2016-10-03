@@ -17,7 +17,7 @@ function Connection() {
             user     : secrets.USERNAME,
             password : secrets.PASSWORD,
             database : secrets.DATABASE,
-            debug    : true
+            debug    : false
         });
     };
 

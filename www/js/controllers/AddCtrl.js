@@ -143,13 +143,11 @@ angular.module('controllers')
 
 
     $scope.previewPhoto = function() {
-        var file = document.querySelector('#photo').files[0];
-        var canvas = document.getElementById('photoPreview');
-        var ctx = canvas.getContext('2d');
-        var reader = new FileReader();
-        reader.onload = function(event) {
+        navigator.camera.getPicture(function(imageData) {
+            var canvas = document.getElementById('photoPreview');
+            var ctx = canvas.getContext('2d');
             var img = new Image();
-            img.src = event.target.result;
+            img.src = 'data:image/jpeg;base64,' + imageData;
             img.onload = function() {
                 canvas.width = img.width;
                 canvas.height = img.height;
@@ -159,13 +157,37 @@ angular.module('controllers')
             $scope.$apply(function () {
                 $scope.photoPreview = true;
             });
-        }
-        reader.readAsDataURL(file);
+        }, function(err) {
+            console.error('camera error: ', err);
+        }, {
+            destinationType: Camera.DestinationType.DATA_URL,
+            quality: 25
+        });
+
+        // var file = document.querySelector('#photo').files[0];
+        // var canvas = document.getElementById('photoPreview');
+        // var ctx = canvas.getContext('2d');
+        // var reader = new FileReader();
+        // reader.onload = function(event) {
+        //     var img = new Image();
+        //     img.src = event.target.result;
+        //     img.onload = function() {
+        //         canvas.width = img.width;
+        //         canvas.height = img.height;
+        //         ctx.drawImage(img, 0, 0);
+        //     }
+        //     $scope.form.photo = img.src;
+        //     $scope.$apply(function () {
+        //         $scope.photoPreview = true;
+        //     });
+        // }
+        // reader.readAsDataURL(file);
     }
 
     $scope.removePhoto = function() {
         $scope.form.photo = undefined;
         $scope.photoPreview = false;
+        navigator.camera.cleanup();
     }
 
     $scope.submitForm = function() {

@@ -97,7 +97,7 @@
                 </textarea>
             </label>
             <div class="item">
-                <div class="fileUpload">
+                <!-- <div class="fileUpload">
                     <span class="button button-positive button-block" ng-hide="photoPreview">
                         Upload photo
                     </span>
@@ -105,7 +105,11 @@
                             ng-model="form.photo" name="photo" id="photo"
                             accept="image/*" capture="camera"
                             onchange="angular.element(this).scope().previewPhoto()">
-                </div>
+                </div> -->
+                <button class="button button-positive button-block"
+                        ng-hide="photoPreview" ng-click="previewPhoto()">
+                    Upload photo
+                </button>
                 <canvas ng-show="photoPreview" id="photoPreview"></canvas>
                 <button class="button button-assertive button-block"
                         ng-show="photoPreview" ng-click="removePhoto()">
