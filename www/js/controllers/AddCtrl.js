@@ -214,7 +214,6 @@ angular.module('controllers')
     $scope.removePhoto = function() {
         $scope.form.photo = undefined;
         $scope.photoPreview = false;
-        navigator.camera.cleanup();
     }
 
     $scope.submitForm = function() {
