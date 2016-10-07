@@ -3,7 +3,7 @@
   "private": "true",
   "dependencies": {
     "bower": "*",
-    "ionic": "^1.2.4",
+    "ionic": "^1.3.1",
     "angular-google-maps": "^2.3.3",
     "lodash": "3.10.1",
     "angular-chart.js": "^0.10.2"
