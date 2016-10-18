@@ -4,7 +4,7 @@ var router = express.Router();
 var bodyParser = require('body-parser');
 var mysql = require('mysql');
 var cloudinary = require('cloudinary');
-var secrets = require("./secrets.js");
+var dotenv = require('dotenv').config({path: '/var/www/demos/gleanhub/api/.env'});
 
 // Configure database connection
 function Connection() {
@@ -13,10 +13,10 @@ function Connection() {
     this.init = function() {
         this.pool = mysql.createPool({
             connectionLimit: 10,
-            host     : secrets.HOSTNAME,
-            user     : secrets.USERNAME,
-            password : secrets.PASSWORD,
-            database : secrets.DATABASE,
+            host     : process.env.HOSTNAME,
+            user     : process.env.USERNAME,
+            password : process.env.PASSWORD,
+            database : process.env.DATABASE,
             debug    : false
         });
     };
@@ -44,13 +44,13 @@ function allowCrossDomain(req, res, next) {
 };
 
 // Routes
-var api = secrets.APIPATH;
-var wuApi = secrets.WU_API;
+var api = process.env.APIPATH;
+var wuApi = process.env.WU_API;
 var columns = ["datetime_occurred", "number", "text", "place", "lat", "lng"];
 cloudinary.config({
-    cloud_name: secrets.CLOUD_NAME,
-    api_key: secrets.CLOUD_KEY,
-    api_secret: secrets.CLOUD_SECRET
+    cloud_name: process.env.CLOUD_NAME,
+    api_key: process.env.CLOUD_KEY,
+    api_secret: process.env.CLOUD_SECRET
 });
 
 // Get API info
@@ -373,8 +373,8 @@ app.use(bodyParser.json({
     limit: '10mb'
 }));
 app.use(allowCrossDomain);
-app.use(secrets.APIPATH, router);
+app.use(process.env.APIPATH, router);
 connection.init();
-var server = app.listen(secrets.PORT, function() {
+var server = app.listen(process.env.PORT, function() {
     console.log('Gleanhub API listening at port ' + server.address().port);
 });
