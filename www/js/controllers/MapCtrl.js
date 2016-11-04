@@ -27,8 +27,10 @@ angular.module('controllers')
                 $rootScope.search.lat = model.latitude;
                 $rootScope.search.lng = model.longitude;
                 $rootScope.search.place = model.title;
-                $scope.centerMap();
-                $scope.$apply();
+                var bounds = new google.maps.LatLngBounds();
+                var latlng = new google.maps.LatLng(model.latitude, model.longitude);
+                bounds.extend(latlng);
+                $scope.Gmap.fitBounds(bounds);
             }
         },
         'markers': [],
@@ -93,11 +95,13 @@ angular.module('controllers')
                         bounds.extend(latlng);
                         $scope.suggestions.markers.push(marker);
                     }
-                    console.log(places[0]);
                     $rootScope.search.lat = places[0].geometry.location.lat();
                     $rootScope.search.lng = places[0].geometry.location.lng();
                     $rootScope.search.place = places[0].name + ', ' + places[0].formatted_address;
                     $scope.Gmap.fitBounds(bounds);
+                    if (places.length < 2) {
+                        $scope.Gmap.fitBounds(places[0].geometry.viewport);
+                    }
                     $ionicLoading.hide();
                 }
             },
