@@ -24,9 +24,9 @@ angular.module('controllers')
     $scope.suggestions = {
         'events': {
             click: function(gMarker, eventName, model) {
-                $scope.search.lat = model.latitude;
-                $scope.search.lng = model.longitude;
-                $scope.search.place = model.title;
+                $rootScope.search.lat = model.latitude;
+                $rootScope.search.lng = model.longitude;
+                $rootScope.search.place = model.title;
                 $scope.centerMap();
                 $scope.$apply();
             }
@@ -93,6 +93,10 @@ angular.module('controllers')
                         bounds.extend(latlng);
                         $scope.suggestions.markers.push(marker);
                     }
+                    console.log(places[0]);
+                    $rootScope.search.lat = places[0].geometry.location.lat();
+                    $rootScope.search.lng = places[0].geometry.location.lng();
+                    $rootScope.search.place = places[0].name + ', ' + places[0].formatted_address;
                     $scope.Gmap.fitBounds(bounds);
                     $ionicLoading.hide();
                 }

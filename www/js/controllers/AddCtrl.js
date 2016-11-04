@@ -12,9 +12,6 @@ angular.module('controllers')
     $scope.keyboardSpace = "";
     $scope.photoPreview = false;
     $scope.mapReady = false;
-    if (undefined !== $scope.search) {
-        $scope.form.place = $scope.search.place;
-    }
     $scope.map = {
         center: {
             latitude: 0,
@@ -67,6 +64,10 @@ angular.module('controllers')
         $scope.noGoingBack = (null === $ionicHistory.backView()) ? true : false;
         $scope.form = {};
         $scope.removePhoto();
+        console.log('place', $rootScope.search.place);
+        if (undefined !== $rootScope.search.place) {
+            $scope.form.place = $rootScope.search.place;
+        }
     });
 
     uiGmapGoogleMapApi.then(function(uiMap) {
