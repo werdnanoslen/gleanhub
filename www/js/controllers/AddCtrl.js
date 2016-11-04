@@ -219,6 +219,9 @@ angular.module('controllers')
 
     $scope.submitForm = function() {
         //TODO validation
+        $scope.loading = $ionicLoading.show({
+            template: 'Submitting...'
+        });
         var reportJson = $scope.form;
         reportJson.active = true;
         reportJson.lat = $scope.search.lat;
@@ -227,9 +230,17 @@ angular.module('controllers')
         promise.then(
             function (payload) {
                 $scope.removePhoto();
+                $scope.loading = $ionicLoading.show({
+                    template: 'Submitted!',
+                    duration: 1000
+                });
                 $state.go('report', {reportId: payload.data.report.insertId});
             },
             function (errorPayload) {
+                $scope.loading = $ionicLoading.show({
+                    template: 'Failed to submit',
+                    duration: 1000
+                });
                 $log.error('failure posting report', errorPayload);
             }
         );
