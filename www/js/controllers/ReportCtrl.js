@@ -1,7 +1,7 @@
 angular.module('controllers')
 
 .controller('ReportCtrl', function($rootScope, $scope, $ionicLoading, $log, $ionicPopup,
-            $state, $ionicHistory, $ionicPopover, $location, uiGmapGoogleMapApi, API) {
+            $state, $ionicHistory, $location, uiGmapGoogleMapApi, API) {
     $scope.noGoingBack = true;
     $scope.gotTemps = false;
     $scope.tempSeries = ['Temp'];
@@ -64,11 +64,6 @@ angular.module('controllers')
         },
         zoom: 15
     };
-    $ionicPopover.fromTemplateUrl('templates/share.html', {
-        scope: $scope,
-    }).then(function(popover) {
-        $scope.popover = popover;
-    });
     $scope.location = encodeURIComponent($location.absUrl());
 
     var promise = API.getReport($state.params.reportId);
@@ -88,6 +83,9 @@ angular.module('controllers')
             if ($scope.form.place === null) {
                 $scope.form.place = $scope.form.lat + ", " + $scope.form.lng;
             }
+            $rootScope.search.lat = report.lat;
+            $rootScope.search.lng = report.lng;
+            $rootScope.search.place = $scope.form.place;
 
             var then = new Date(report.datetime_reported);
             var now = new Date();
