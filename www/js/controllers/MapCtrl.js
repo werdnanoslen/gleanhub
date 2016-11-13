@@ -81,9 +81,9 @@ angular.module('controllers')
                 places_changed: function (searchBox) {
                     filterCriteria = undefined;
                     $scope.explicitSearch = true;
-                    $scope.loading = $ionicLoading.show({
-                        content: 'Getting location...',
-                        showBackdrop: false
+                    $ionicLoading.show({
+                        template: 'Searching',
+                        duration: 10000
                     });
                     var places = searchBox.getPlaces();
                     var bounds = new google.maps.LatLngBounds();
@@ -124,9 +124,9 @@ angular.module('controllers')
 
     $scope.centerOnMe = function() {
         console.log('Getting current location');
-        $scope.loading = $ionicLoading.show({
-            content: 'Getting current location...',
-            showBackdrop: false
+        $ionicLoading.show({
+            template: 'Getting current location',
+            duration: 10000
         });
         navigator.geolocation.getCurrentPosition(function(pos) {
             $scope.setCenter(pos.coords.latitude, pos.coords.longitude);
@@ -187,6 +187,10 @@ angular.module('controllers')
     $scope.filterReports = function() {
         if (undefined !== filterCriteria) {
             console.log('filtering by \'' + filterCriteria + '\'');
+            $ionicLoading.show({
+                template: 'Searching',
+                duration: 10000
+            });
             var promise = API.getReports({"*": filterCriteria});
             promise.then(
                 function (payload) {
@@ -204,10 +208,12 @@ angular.module('controllers')
                             }
                         }
                     }
+                    $ionicLoading.hide();
                 },
                 function (errorPayload) {
                     $log.error('failure filtering reports', errorPayload);
-                    $scope.reports.markers = {};
+                    $scope.reports.markers = [];
+                    $ionicLoading.hide();
                 }
             );
         }
