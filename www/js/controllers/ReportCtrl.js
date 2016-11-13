@@ -59,7 +59,8 @@ angular.module('controllers')
         options: {
             disableDefaultUI: true,
             disableDoubleClickZoom: true,
-            draggable: false
+            draggable: false,
+            scrollwheel: false
         },
         zoom: 15
     };
