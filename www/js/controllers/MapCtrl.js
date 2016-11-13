@@ -35,10 +35,14 @@ angular.module('controllers')
         },
         'markers': [],
         'options': {
-            'icon': {
-                url: 'img/location-outline.png',
-                scaledSize: new google.maps.Size(50, 50) // scaled size
-            }
+            icon: {
+                path: google.maps.SymbolPath.CIRCLE,
+                fillOpacity: 1.0,
+                fillColor: '#387ef5',
+                strokeColor: '#111111',
+                strokeWeight: 2.0,
+                scale: 7
+            },
         }
     };
     $scope.map = {
