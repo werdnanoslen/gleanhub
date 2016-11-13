@@ -52,7 +52,7 @@ angular.module('controllers')
         },
         control: {},
         events: {
-            center_changed: function(map) {
+            idle: function(map) {
                 var bounds = map.getBounds();
                 $scope.map.searchbox.options.bounds = bounds;
                 $scope.updateBounds(map);
