@@ -24,6 +24,10 @@ angular.module('controllers')
     $scope.suggestions = {
         'events': {
             click: function(gMarker, eventName, model) {
+                // When centered on suggestion, clicking again acts as add button
+                if (model.title === $rootScope.search.place) {
+                    $state.go('add');
+                }
                 $rootScope.search.lat = model.latitude;
                 $rootScope.search.lng = model.longitude;
                 $rootScope.search.place = model.title;
