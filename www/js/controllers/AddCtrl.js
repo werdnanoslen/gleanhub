@@ -19,7 +19,7 @@ angular.module('controllers')
         },
         control: {},
         events: {
-            center_changed: function(map) {
+            idle: function(map) {
                 $scope.isDragging = false;
                 $scope.updateBounds(map);
             },
