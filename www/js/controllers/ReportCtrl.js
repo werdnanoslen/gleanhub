@@ -133,7 +133,7 @@ angular.module('controllers')
 
     $scope.showActiveQuestion = function() {
         var confirmPopup = $ionicPopup.confirm({
-            title: 'Report this as inactive?',
+            title: 'Remove this report',
             buttons: [
                 {
                     text: 'Cancel',
