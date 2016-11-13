@@ -81,12 +81,9 @@ angular.module('controllers')
                 places_changed: function (searchBox) {
                     filterCriteria = undefined;
                     $scope.explicitSearch = true;
-                    $ionicLoading.show({
-                        template: 'Searching',
-                        duration: 10000
-                    });
                     var places = searchBox.getPlaces();
                     var bounds = new google.maps.LatLngBounds();
+                    $scope.suggestions.markers = [];
                     for (var i=0; i<places.length; ++i){
                         var place = places[i];
                         var marker = {
@@ -106,7 +103,6 @@ angular.module('controllers')
                     if (places.length < 2) {
                         $scope.Gmap.fitBounds(places[0].geometry.viewport);
                     }
-                    $ionicLoading.hide();
                 }
             },
             options: {
