@@ -88,7 +88,25 @@ angular.module('controllers')
             if ($scope.form.place === null) {
                 $scope.form.place = $scope.form.lat + ", " + $scope.form.lng;
             }
-            console.log($scope.form);
+
+            var then = new Date(report.datetime_reported);
+            var now = new Date();
+            var daysAgo = Math.round((now-then)/(1000*60*60*24));
+            var datetimeString = "at an unknown time";
+            var monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+            if (daysAgo == 0) {
+                datetimeString = "today";
+            } else if (daysAgo == 1) {
+                datetimeString = "yesterday";
+            } else if (daysAgo <= 7) {
+                datetimeString = daysAgo + " days ago";
+            } else if (then.getYear() === now.getYear()) {
+                datetimeString = monthNames[then.getMonth()] + " " + then.getDay();
+            } else {
+                datetimeString = monthNames[then.getMonth()] + " " + then.getDay() + ", " + then.getFullYear();
+            }
+            console.log(then);
+            $scope.whenReported = "Posted " + datetimeString;
 
             var promise = API.getTemp48(report.lat, report.lng);
             promise.then(

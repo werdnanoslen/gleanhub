@@ -15,7 +15,9 @@
             <form class="list" id="addForm" name="addForm">
                 <img ng-src="{{form.photo}}" ng-hide="form.photo === null"
                         id="photoPreview"></canvas>
-
+                <div class="item item-divider">
+                    {{whenReported}}
+                </div>
                 <label class="item item-input item-floating-label"
                          ng-hide="form.contents === null">
                     <span class="input-label">What food was here?</span>
