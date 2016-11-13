@@ -239,7 +239,6 @@ angular.module('controllers')
         $scope.map.searchbox.options.bounds = new google.maps.LatLngBounds(sw, ne);
 
         var distance = Math.sqrt(Math.pow(((69.1/1.61) * (ne.lat() - sw.lat())), 2) + Math.pow(((53/1.61) * (ne.lng() - sw.lng())), 2))/2;
-        $scope.reports.markers = [];
         var promise = API.getReportsNearby(latlng.lat(), latlng.lng(), distance);
         promise.then(
             function (payload) {
