@@ -93,14 +93,19 @@
             </ui-gmap-google-map>
         </div>
 
-        <label for="line" class="item item-input item-stacked-label" ng-show="gotTemps" >
+        <div class="item item-button-right" ng-show="gotTemps">
             Temperature, last 48 hrs
+            <button class="button button-icon ion-ios-help-outline" ng-click="popover.show($event)">
+            </button>
+        </div>
+
+        <div ng-show="gotTemps">
             <canvas id="line" class="chart chart-line" chart-data="tempData"
                     chart-labels="tempLabels" chart-series="tempSeries" chart-options="tempOptions"
                     chart-dataset-override="datasetOverride">
                     <label class="item item-input item-floating-label">
             </canvas>
-        </label>
+        </div>
 
         <div id="still-active-button">
             <button class="button button-full button-small button-dark" ng-click="showActiveQuestion()">

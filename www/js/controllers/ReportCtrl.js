@@ -1,7 +1,8 @@
 angular.module('controllers')
 
-.controller('ReportCtrl', function($rootScope, $scope, $ionicLoading, $log, $ionicPopup,
-            $state, $ionicHistory, $location, uiGmapGoogleMapApi, API) {
+.controller('ReportCtrl', function($rootScope, $scope, $ionicLoading, $log,
+            $ionicPopup, $ionicPopover, $state, $ionicHistory, $location,
+            uiGmapGoogleMapApi, API) {
     $scope.noGoingBack = true;
     $scope.gotTemps = false;
     $scope.tempSeries = ['Temp'];
@@ -137,6 +138,12 @@ angular.module('controllers')
             $log.error('failure fetching report', errorPayload);
         }
     );
+
+    $ionicPopover.fromTemplateUrl('templates/popover.html', {
+        scope: $scope,
+    }).then(function(popover) {
+        $scope.popover = popover;
+    });
 
     $scope.$on('$stateChangeSuccess', function(event, toState, toParams, fromState, fromParams) {
         if (null === $ionicHistory.backView()) {
