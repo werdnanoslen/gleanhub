@@ -178,6 +178,8 @@ angular.module('controllers')
                                 $ionicLoading.show({
                                     template: 'Thanks, this report won\'t show up anymore',
                                     duration: 2000
+                                }).then(function() {
+                                    $state.go('map');
                                 });
                             },
                             function (errorPayload) {
