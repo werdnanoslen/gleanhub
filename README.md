@@ -8,6 +8,6 @@ Based on [mobile-map-io](https://github.com/werdnanoslen/mobile-map-io): a boile
 
 1. Run ```npm install```
 1. Run ```bower install```
-1. Rename .env.example to just .env and add your secret keys/config
+1. Rename api/.env.example to just api/.env and add your secret keys/config
 1. Import api/reports.sql and api/users.sql
 1. Run ```npm start```
